@@ -111,7 +111,7 @@ document.querySelector('.work_03').addEventListener("mouseleave", function () {
     work_c.reverse();
 });
 
-const text = "Portfolio of Jay"; // 타이핑 문구
+const text = "Portfolio of HyeBin"; // 타이핑 문구
 const ttt = 0;
 let index = 0;
 let speed = 120; // 속도 
