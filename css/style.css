@@ -542,28 +542,19 @@ a, a:hover, a:active {text-decoration: none; outline: none}
     font-weight: 600;
     letter-spacing: -0.02em;
     cursor: pointer;
-    background: linear-gradient(
-        90deg,
-        #3D35BE 0%,
-        #6c5cff 18%,
-        #eb5dc8 38%,
-        #ffffff 50%,
-        #eb5dc8 62%,
-        #6c5cff 82%,
-        #3D35BE 100%
-    );
-    background-size: 250% auto;
+    background: linear-gradient(90deg, #3D35BE 0%, #7a56e8 50%, #eb5dc8 100%);
+    background-size: 200% 100%;
     background-position: 0% 50%;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
     color: transparent;
-    animation: workCvShine 3.6s ease-in-out infinite;
+    animation: workCvGradientFlow 5s ease-in-out infinite;
     transition: transform .25s ease, opacity .25s ease;
 }
 
 .work_cv:hover {
-    transform: translateY(-2px);
+    transform: translateY(-5px);
     opacity: 0.95;
 }
 
@@ -572,22 +563,19 @@ a, a:hover, a:active {text-decoration: none; outline: none}
 }
 
 .work_cv:focus-visible {
-    box-shadow: 0 0 0 2px rgba(255,255,255,0.22);
+    box-shadow: 0 0 0 2px rgba(255,255,255,0.18);
     border-radius: 6px;
 }
 
-@keyframes workCvShine {
+@keyframes workCvGradientFlow {
     0% {
         background-position: 0% 50%;
-        filter: brightness(1);
     }
     50% {
         background-position: 100% 50%;
-        filter: brightness(1.12);
     }
     100% {
         background-position: 0% 50%;
-        filter: brightness(1);
     }
 }
 
