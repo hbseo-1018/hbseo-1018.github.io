@@ -535,8 +535,10 @@ a, a:hover, a:active {text-decoration: none; outline: none}
 }
 
 .work_cv {
-    display: inline-block;
     position: relative;
+    display: inline-block;
+    z-index: 0;
+    padding: 0 .2em;
     font-family: 'Poppins', sans-serif;
     font-size: 1.4rem;
     font-weight: 600;
@@ -549,9 +551,9 @@ a, a:hover, a:active {text-decoration: none; outline: none}
     -webkit-text-fill-color: transparent;
     background-clip: text;
     color: transparent;
-    animation: workCvGradientFlow 5s ease-in-out infinite;
-    transition: transform .25s ease, opacity .25s ease;
+    animation: workCvGradientFlow 4s ease-in-out infinite;
 }
+
 
 .work_cv:hover {
     transform: translateY(-5px);
@@ -565,6 +567,19 @@ a, a:hover, a:active {text-decoration: none; outline: none}
 .work_cv:focus-visible {
     box-shadow: 0 0 0 2px rgba(255,255,255,0.18);
     border-radius: 6px;
+}
+
+.work_cv::before {
+    content: "";
+    position: absolute;
+    left: -0.08em;
+    right: -0.08em;
+    bottom: 0.12em;
+    height: 0.58em;
+    background: rgba(0, 0, 0, 0.85);
+    border-radius: 0.2em;
+    transform: rotate(-1.2deg);
+    z-index: -1;
 }
 
 @keyframes workCvGradientFlow {
