@@ -3,8 +3,8 @@
         <div class="project_layer_kicker">WORK 03</div>
         <h2 class="project_layer_title" id="portfolioModalTitle">충청남도 폭력피해자 지원시설 업무관리시스템 구축</h2>
         <p class="project_layer_desc">
-            기관 데이터의 DB화, 지도 API 연동, 실시간 알림, 파일 업로드 UX 개선까지
-            사용자 편의성과 운영 효율을 함께 고려한 프로젝트입니다.
+            기관 데이터의 DB화, 지도 API 연동, 실시간 알림, 파일 업로드 UX 개선까지 함께 수행한 프로젝트입니다.
+            아래에서 각 수행 작업별 상세 내용을 펼쳐서 볼 수 있습니다.
         </p>
     </div>
 
@@ -13,7 +13,7 @@
             <h3 class="project_panel_title">주요 수행 작업</h3>
             <div class="project_bullet_list">
                 <div class="project_bullet_item">유관기관 DB화 + 지도API 연동</div>
-                <div class="project_bullet_item">실시간 알림 기능(Socket.io)</div>
+                <div class="project_bullet_item">실시간 알림 기능 (Socket.io)</div>
                 <div class="project_bullet_item">Dropzone 파일 라이브러리 연동</div>
             </div>
         </section>
@@ -29,27 +29,48 @@
                 <span>Dropzone</span>
             </div>
         </section>
-
-        <section class="project_panel">
-            <h3 class="project_panel_title">정리 방향</h3>
-            <div class="project_bullet_list">
-                <div class="project_bullet_item">기관 정보의 정적 관리 방식에서 DB 관리 방식으로 전환한 배경</div>
-                <div class="project_bullet_item">지도 API와 기관 데이터 연결 구조</div>
-                <div class="project_bullet_item">실시간 알림 이벤트 흐름과 사용자 반응 방식</div>
-                <div class="project_bullet_item">Dropzone 도입에 따른 파일 업로드 경험 개선</div>
-            </div>
-        </section>
-
-        <section class="project_panel">
-            <h3 class="project_panel_title">추가 예정</h3>
-            <div class="project_placeholder">
-                기관 데이터 구조, 지도 표시 흐름, 실시간 알림 처리 과정, 업로드 UI 개선 전후를 이곳에 이어서 정리할 수 있습니다.
-            </div>
-        </section>
     </div>
 
-    <div class="project_note">
-        이 레이어는 데이터 구조 개선, 외부 API 활용, 실시간 통신, 파일 업로드 UX를 한 번에 보여줄 수 있어
-        구축형 프로젝트의 폭넓은 경험을 전달하기 좋습니다.
-    </div>
+    <section class="project_panel project_toggle_panel">
+        <h3 class="project_panel_title">수행 작업 상세</h3>
+
+        <details class="project_toggle_item" open>
+            <summary>유관기관 DB화 + 지도API 연동</summary>
+            <div class="project_toggle_body">
+                <p>
+                    기존에 정적으로 관리되던 기관 정보를 DB 기반으로 전환하고, 지도 API와 연동하여 활용도를 높인 내용을 정리하는 영역입니다.
+                    데이터 구조 변경 이유와 지도 표시 흐름을 함께 보여주면 좋습니다.
+                </p>
+                <div class="project_placeholder">
+                    이후 추가 예정 예시: 기관 데이터 구조, 관리 방식 개선, 지도 연동 흐름, 사용자 편의성 향상
+                </div>
+            </div>
+        </details>
+
+        <details class="project_toggle_item">
+            <summary>실시간 알림 기능 (Socket.io)</summary>
+            <div class="project_toggle_body">
+                <p>
+                    사용자 또는 운영자에게 실시간으로 상태를 전달하는 알림 기능을 구현한 내용을 정리하는 영역입니다.
+                    어떤 이벤트가 발생했을 때 어떤 사용자에게 어떤 방식으로 전달되는지 쓰기 좋습니다.
+                </p>
+                <div class="project_placeholder">
+                    이후 추가 예정 예시: 이벤트 발생 조건, 소켓 연결 흐름, 알림 표시 방식, 운영상 효과
+                </div>
+            </div>
+        </details>
+
+        <details class="project_toggle_item">
+            <summary>Dropzone 파일 라이브러리 연동</summary>
+            <div class="project_toggle_body">
+                <p>
+                    파일 업로드 UX를 개선하기 위해 Dropzone 라이브러리를 연동한 내용을 정리하는 영역입니다.
+                    기존 업로드 방식과 비교해 무엇이 좋아졌는지 함께 적으면 전달력이 높아집니다.
+                </p>
+                <div class="project_placeholder">
+                    이후 추가 예정 예시: 기존 업로드 문제점, Dropzone 도입 이유, UI 개선 포인트, 사용자 경험 변화
+                </div>
+            </div>
+        </details>
+    </section>
 </div>

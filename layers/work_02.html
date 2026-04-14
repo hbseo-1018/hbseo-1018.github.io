@@ -4,7 +4,7 @@
         <h2 class="project_layer_title" id="portfolioModalTitle">디지털성범죄피해자지원센터 삭제지원시스템 고도화</h2>
         <p class="project_layer_desc">
             조건 기반 통계, 문서 자동화, 전송 데이터 보안 강화를 중심으로 고도화를 수행한 프로젝트입니다.
-            기능 설명뿐 아니라 실제 업무 흐름 관점으로도 정리하기 좋도록 구성했습니다.
+            아래에서 수행 작업별 상세 내용을 토글 형식으로 확인할 수 있습니다.
         </p>
     </div>
 
@@ -29,27 +29,48 @@
                 <span>보안 강화</span>
             </div>
         </section>
-
-        <section class="project_panel">
-            <h3 class="project_panel_title">정리 방향</h3>
-            <div class="project_bullet_list">
-                <div class="project_bullet_item">사용자 입력 조건이 SQL 집계 결과로 이어지는 흐름</div>
-                <div class="project_bullet_item">공문 생성/관리 프로세스와 자동화 포인트</div>
-                <div class="project_bullet_item">토큰 기반 암호화 적용 위치와 보호 대상 데이터</div>
-                <div class="project_bullet_item">운영 효율성과 보안성 측면의 개선 효과</div>
-            </div>
-        </section>
-
-        <section class="project_panel">
-            <h3 class="project_panel_title">추가 예정</h3>
-            <div class="project_placeholder">
-                통계 화면 흐름, 집계 쿼리 설명, 문서 자동화 예시, 암호화 처리 코드와 적용 위치를 여기에 정리할 수 있습니다.
-            </div>
-        </section>
     </div>
 
-    <div class="project_note">
-        특히 이 프로젝트는 사용자 조건 기반 통계와 보안 강화를 함께 보여줄 수 있어,
-        기능 구현과 실무 안정성 두 측면을 동시에 드러내기 좋은 레이어입니다.
-    </div>
+    <section class="project_panel project_toggle_panel">
+        <h3 class="project_panel_title">수행 작업 상세</h3>
+
+        <details class="project_toggle_item" open>
+            <summary>사용자 입력 조건 기반 통계 집계 및 조회 기능 구현</summary>
+            <div class="project_toggle_body">
+                <p>
+                    사용자가 직접 선택한 조건을 기준으로 통계를 집계하고 화면에 조회할 수 있도록 구현한 내용을 정리하는 영역입니다.
+                    조건값이 어떤 방식으로 전달되고, 어떤 집계 기준으로 결과가 출력되는지 흐름 중심으로 작성하면 좋습니다.
+                </p>
+                <div class="project_placeholder">
+                    이후 추가 예정 예시: 검색 조건 흐름, 집계 쿼리 구조, 화면 출력 방식, 성능 고려 사항
+                </div>
+            </div>
+        </details>
+
+        <details class="project_toggle_item">
+            <summary>불법성 증명 공문 관리 및 문서 자동화 기능 개발</summary>
+            <div class="project_toggle_body">
+                <p>
+                    공문 생성, 관리, 출력 또는 자동화 처리 흐름을 정리하는 영역입니다.
+                    문서 생성 규칙, 상태 관리, 반복 업무 축소 효과를 함께 보여주면 전달력이 좋습니다.
+                </p>
+                <div class="project_placeholder">
+                    이후 추가 예정 예시: 공문 작성 프로세스, 자동 생성 로직, 관리 화면 흐름, 운영 개선 효과
+                </div>
+            </div>
+        </details>
+
+        <details class="project_toggle_item">
+            <summary>토큰 기반 암호화 적용으로 Form 전송 데이터 보안 강화</summary>
+            <div class="project_toggle_body">
+                <p>
+                    사용자 페이지에서 전송되는 데이터에 토큰 기반 암호화를 적용해 보안을 강화한 내용을 정리하는 영역입니다.
+                    어떤 데이터가 보호 대상이었는지, 어느 시점에 암호화/복호화가 일어나는지 설명하면 좋습니다.
+                </p>
+                <div class="project_placeholder">
+                    이후 추가 예정 예시: 적용 배경, 암호화 흐름, 대상 파라미터, 보안상 기대 효과
+                </div>
+            </div>
+        </details>
+    </section>
 </div>
