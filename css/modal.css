@@ -326,3 +326,191 @@ body.modal_open {
         line-height: 1.75;
     }
 }
+
+.contact_btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.contact_layer {
+    gap: 2.5rem;
+}
+
+.contact_layer_visual {
+    position: relative;
+    overflow: hidden;
+    min-height: 260px;
+    padding: 2.5rem 2rem;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    background:
+        radial-gradient(circle at 20% 30%, rgba(61, 53, 190, 0.18), transparent 30%),
+        radial-gradient(circle at 80% 25%, rgba(235, 93, 200, 0.16), transparent 28%),
+        rgba(255, 255, 255, 0.03);
+}
+
+.contact_layer_intro {
+    position: relative;
+    z-index: 1;
+    max-width: 720px;
+}
+
+.contact_layer_kicker {
+    display: inline-block;
+    margin-bottom: 1rem;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    color: #c4b9ff;
+}
+
+.contact_layer_title {
+    font-family: 'Poppins', sans-serif;
+    font-size: 3rem;
+    line-height: 1.1;
+    font-weight: 700;
+    letter-spacing: -0.04em;
+    color: #fff;
+}
+
+.contact_layer_title span {
+    display: block;
+    margin-top: 0.35rem;
+    background: linear-gradient(to right, #3D35BE, #eb5dc8);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.contact_layer_desc {
+    margin-top: 1rem;
+    max-width: 540px;
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 1rem;
+    line-height: 1.9;
+}
+
+.contact_layer_orbit {
+    position: absolute;
+    top: 50%;
+    right: -140px;
+    width: 420px;
+    height: 160px;
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    border-radius: 50%;
+    transform: translateY(-50%) rotate(-12deg);
+}
+
+.contact_layer_planet {
+    position: absolute;
+    top: 50%;
+    right: 90px;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: linear-gradient(to right, #3D35BE, #eb5dc8);
+    box-shadow: 0 0 24px rgba(235, 93, 200, 0.45);
+    animation: contactPlanetFloat 3.5s ease-in-out infinite;
+}
+
+@keyframes contactPlanetFloat {
+    0% {
+        transform: translateY(-50%) translateX(0);
+    }
+    50% {
+        transform: translateY(calc(-50% - 10px)) translateX(-12px);
+    }
+    100% {
+        transform: translateY(-50%) translateX(0);
+    }
+}
+
+.contact_card_wrap {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+}
+
+.contact_card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+    padding: 1.5rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.04);
+    transition: transform .25s ease, border-color .25s ease, background .25s ease;
+}
+
+.contact_card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.06);
+}
+
+.contact_card_label {
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.85rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #c4b9ff;
+}
+
+.contact_card_value {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: #fff;
+    line-height: 1.5;
+    word-break: break-all;
+}
+
+.contact_card_hint {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.95rem;
+}
+
+@media (max-width: 1024px) {
+    .contact_layer_title {
+        font-size: 2.3rem;
+    }
+
+    .contact_card_wrap {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 670px) {
+    .contact_layer_visual {
+        min-height: 220px;
+        padding: 1.6rem 1.2rem;
+    }
+
+    .contact_layer_title {
+        font-size: 1.8rem;
+    }
+
+    .contact_layer_desc {
+        font-size: 0.94rem;
+        line-height: 1.8;
+    }
+
+    .contact_layer_orbit {
+        width: 260px;
+        height: 110px;
+        right: -90px;
+    }
+
+    .contact_layer_planet {
+        right: 56px;
+        width: 10px;
+        height: 10px;
+    }
+
+    .contact_card {
+        padding: 1.2rem;
+    }
+
+    .contact_card_value {
+        font-size: 1.05rem;
+    }
+}

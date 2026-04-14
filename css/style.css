@@ -413,7 +413,7 @@ a, a:hover, a:active {text-decoration: none; outline: none}
 .work_cv_text {
     display: inline-block;
     font-family: 'Poppins', sans-serif;
-    font-size: 1.4rem;
+    /* font-size: 1.4rem; */
     font-weight: 600;
     letter-spacing: -0.02em;
     background: linear-gradient(90deg, #3D35BE 0%, #7a56e8 50%, #eb5dc8 100%);
