@@ -20,6 +20,7 @@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.4/ScrollTrigger.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.0.2/TweenMax.min.js"></script>
     <script type="text/javascript" src="https://unpkg.com/split-type"></script>
+    <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
 </head>
 
 <body>
@@ -117,124 +118,181 @@
 
             <section class="sel">
                 <div class="container third">
-                    <div class="work_title">
-                        <p>WORK</p>
-                        <p class="work_cv" data-modal-path="work_cv.html" tabindex="0" role="button" aria-label="경력기술서 열기">
-                            <span class="work_cv_text">Curriculum Vitae</span>
-                        </p>
-                        <div class="work_04_m">
-                            <p class="work_text">
-                                새로운 배움에 과감하게 부딪혀 도전하며 소통을 중요시하는 서혜빈입니다.
-                                사용자에게 도움이 되는 서비스를 만들고, 동료와 함께 성장하는 과정을 소중하게 생각하는 개발자입니다.
-                                계획적이고 꼼꼼하게 업무를 정리하는 습관이 있어 맡은 일을 안정적으로 수행하는 편입니다.
-                                혼자만 잘하는 것보다 서로의 의견을 나누고 도우며 함께 더 나은 결과를 만들어갈 때 더 큰 가치가 생긴다고 믿습니다.
-                                앞으로도 사용자에게는 편리함을, 동료에게는 신뢰를 주는 사람으로서 함께 일하고 싶은 개발자가 되겠습니다.
+                    <div class="container third">
+                        <!--
+                        <div class="work_title">
+                            <p>WORK</p>
+                            <p class="work_cv" data-modal-path="work_cv.html" tabindex="0" role="button" aria-label="경력기술서 열기">
+                                <span class="work_cv_text">Curriculum Vitae</span>
                             </p>
+                            <div class="work_04_m">
+                                <p class="work_text">
+                                    새로운 배움에 과감하게 부딪혀 도전하며 소통을 중요시하는 서혜빈입니다.
+                                    사용자에게 도움이 되는 서비스를 만들고, 동료와 함께 성장하는 과정을 소중하게 생각하는 개발자입니다.
+                                    계획적이고 꼼꼼하게 업무를 정리하는 습관이 있어 맡은 일을 안정적으로 수행하는 편입니다.
+                                    혼자만 잘하는 것보다 서로의 의견을 나누고 도우며 함께 더 나은 결과를 만들어갈 때 더 큰 가치가 생긴다고 믿습니다.
+                                    앞으로도 사용자에게는 편리함을, 동료에게는 신뢰를 주는 사람으로서 함께 일하고 싶은 개발자가 되겠습니다.
+                                </p>
+                            </div>
                         </div>
-                    </div>
-
-                    <div class="work_wrap">
-                        <div class="work_01" data-modal-path="work_01.html" tabindex="0" role="button" aria-label="사이버범죄신고시스템 프로젝트 상세 보기">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="#ffffff">
-                                <path d="M26 26 L0 32 L0 32 L26 38 L32 64 L32 64 L38 38 L64 32 L64 32 L38 26 L32 0 L32 0 Z"></path>
-                            </svg>
-                            <div class="cont_box">
-                                <div>
-                                    <img src="../images/work_01.png" alt="사이버범죄신고시스템 프로젝트 이미지">
+                    
+                        <div class="work_wrap">
+                            <div class="work_01" data-modal-path="work_01.html" tabindex="0" role="button" aria-label="사이버범죄신고시스템 프로젝트 상세 보기">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="#ffffff">
+                                    <path d="M26 26 L0 32 L0 32 L26 38 L32 64 L32 64 L38 38 L64 32 L64 32 L38 26 L32 0 L32 0 Z"></path>
+                                </svg>
+                                <div class="cont_box">
+                                    <div>
+                                        <img src="../images/work_01.png" alt="사이버범죄신고시스템 프로젝트 이미지">
+                                    </div>
+                                    <div class="work_info">
+                                        <p>사이버범죄신고시스템 고도화 및 유지보수</p>
+                                        <p>자세히보기</p>
+                                    </div>
                                 </div>
-                                <div class="work_info">
-                                    <p>사이버범죄신고시스템 고도화 및 유지보수</p>
-                                    <p>자세히보기</p>
+                            </div>
+                    
+                            <div class="work_02" data-modal-path="work_02.html" tabindex="0" role="button" aria-label="삭제지원시스템 프로젝트 상세 보기">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="#ffffff">
+                                    <path d="M26 26 L0 32 L0 32 L26 38 L32 64 L32 64 L38 38 L64 32 L64 32 L38 26 L32 0 L32 0 Z"></path>
+                                </svg>
+                                <div class="cont_box">
+                                    <div>
+                                        <img src="../images/work_02.png" alt="삭제지원시스템 프로젝트 이미지">
+                                    </div>
+                                    <div class="work_info">
+                                        <p>디지털성범죄피해자지원센터 삭제지원시스템 고도화</p>
+                                        <p>자세히보기</p>
+                                    </div>
+                                </div>
+                            </div>
+                    
+                            <div class="work_03" data-modal-path="work_03.html" tabindex="0" role="button" aria-label="폭력피해자 지원시설 업무관리시스템 프로젝트 상세 보기">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="#ffffff">
+                                    <path d="M26 26 L0 32 L0 32 L26 38 L32 64 L32 64 L38 38 L64 32 L64 32 L38 26 L32 0 L32 0 Z"></path>
+                                </svg>
+                                <div class="cont_box">
+                                    <div>
+                                        <img src="../images/work_03.png" alt="폭력피해자 지원시설 업무관리시스템 프로젝트 이미지">
+                                    </div>
+                                    <div class="work_info">
+                                        <p>충청남도 폭력피해자 지원시설 업무관리시스템 구축</p>
+                                        <p>자세히보기</p>
+                                    </div>
+                                </div>
+                            </div>
+                    
+                            <div class="work_04">
+                                <p class="work_text">
+                                    새로운 배움에 과감하게 부딪혀 도전하며 소통을 중요시하는 서혜빈입니다.
+                                    사용자에게 도움이 되는 서비스를 만들고, 동료와 함께 성장하는 과정을 소중하게 생각하는 개발자입니다.
+                                    계획적이고 꼼꼼하게 업무를 정리하는 습관이 있어 맡은 일을 안정적으로 수행하는 편입니다.
+                                    혼자만 잘하는 것보다 서로의 의견을 나누고 도우며 함께 더 나은 결과를 만들어갈 때 더 큰 가치가 생긴다고 믿습니다.
+                                    앞으로도 사용자에게는 편리함을, 동료에게는 신뢰를 주는 사람으로서 함께 일하고 싶은 개발자가 되겠습니다.
+                                </p>
+                                <div class="contact">
+                                    <span class="contact_btn" data-modal-path="contact.html" tabindex="0" role="button" aria-label="연락처 모달 열기">Contact</span>
                                 </div>
                             </div>
                         </div>
-
-                        <div class="work_02" data-modal-path="work_02.html" tabindex="0" role="button" aria-label="삭제지원시스템 프로젝트 상세 보기">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="#ffffff">
-                                <path d="M26 26 L0 32 L0 32 L26 38 L32 64 L32 64 L38 38 L64 32 L64 32 L38 26 L32 0 L32 0 Z"></path>
-                            </svg>
-                            <div class="cont_box">
-                                <div>
-                                    <img src="../images/work_02.png" alt="삭제지원시스템 프로젝트 이미지">
+                    
+                        <div class="work_wrap_m">
+                            <div class="work_01_m" data-modal-path="work_01.html" tabindex="0" role="button" aria-label="사이버범죄신고시스템 프로젝트 상세 보기">
+                                <div class="cont_box_m">
+                                    <div>
+                                        <img src="../images/work_01.png" alt="사이버범죄신고시스템 프로젝트 이미지">
+                                    </div>
+                                    <div class="work_info_m">
+                                        <p>사이버범죄신고시스템 고도화 및 유지보수</p>
+                                        <p>자세히보기</p>
+                                    </div>
                                 </div>
-                                <div class="work_info">
-                                    <p>디지털성범죄피해자지원센터 삭제지원시스템 고도화</p>
-                                    <p>자세히보기</p>
+                            </div>
+                    
+                            <div class="work_02_m" data-modal-path="work_02.html" tabindex="0" role="button" aria-label="삭제지원시스템 프로젝트 상세 보기">
+                                <div class="cont_box_m">
+                                    <div>
+                                        <img src="../images/work_02.png" alt="삭제지원시스템 프로젝트 이미지">
+                                    </div>
+                                    <div class="work_info_m">
+                                        <p>디지털성범죄피해자지원센터 삭제지원시스템 고도화</p>
+                                        <p>자세히보기</p>
+                                    </div>
+                                </div>
+                            </div>
+                    
+                            <div class="work_03_m" data-modal-path="work_03.html" tabindex="0" role="button" aria-label="폭력피해자 지원시설 업무관리시스템 프로젝트 상세 보기">
+                                <div class="cont_box_m">
+                                    <div>
+                                        <img src="../images/work_03.png" alt="폭력피해자 지원시설 업무관리시스템 프로젝트 이미지">
+                                    </div>
+                                    <div class="work_info_m">
+                                        <p>충청남도 폭력피해자 지원시설 업무관리시스템 구축</p>
+                                        <p>자세히보기</p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-
-                        <div class="work_03" data-modal-path="work_03.html" tabindex="0" role="button" aria-label="폭력피해자 지원시설 업무관리시스템 프로젝트 상세 보기">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="#ffffff">
-                                <path d="M26 26 L0 32 L0 32 L26 38 L32 64 L32 64 L38 38 L64 32 L64 32 L38 26 L32 0 L32 0 Z"></path>
-                            </svg>
-                            <div class="cont_box">
-                                <div>
-                                    <img src="../images/work_03.png" alt="폭력피해자 지원시설 업무관리시스템 프로젝트 이미지">
-                                </div>
-                                <div class="work_info">
-                                    <p>충청남도 폭력피해자 지원시설 업무관리시스템 구축</p>
-                                    <p>자세히보기</p>
+                    
+                        <div class="scroll_footer">
+                            <div>PORTFOLIO</div>
+                            <div class="contact_m contact_btn" data-modal-path="contact.html" tabindex="0" role="button" aria-label="연락처 모달 열기">Contact</div>
+                            <div>ⓒ HyeBin Seo</div>
+                        </div>
+                        -->
+                    
+                        <div class="third_scene">
+                            <div class="third_scene_top_left">
+                                <img src="../images/ring_planet_white_latest.svg" alt="ring planet">
+                            </div>
+                    
+                            <div class="third_scene_center">
+                                <div class="third_scene_earth_wrap">
+                                    <model-viewer
+                                        src="../models/earth.glb"
+                                        class="third_scene_earth"
+                                        autoplay
+                                        auto-rotate
+                                        rotation-per-second="18deg"
+                                        camera-controls="false"
+                                        disable-zoom
+                                        disable-pan
+                                        disable-tap
+                                        interaction-prompt="none"
+                                        shadow-intensity="0"
+                                        exposure="1"
+                                        environment-image="neutral"
+                                        ar="false">
+                                    </model-viewer>
                                 </div>
                             </div>
-                        </div>
-
-                        <div class="work_04">
-                            <p class="work_text">
-                                새로운 배움에 과감하게 부딪혀 도전하며 소통을 중요시하는 서혜빈입니다.
-                                사용자에게 도움이 되는 서비스를 만들고, 동료와 함께 성장하는 과정을 소중하게 생각하는 개발자입니다.
-                                계획적이고 꼼꼼하게 업무를 정리하는 습관이 있어 맡은 일을 안정적으로 수행하는 편입니다.
-                                혼자만 잘하는 것보다 서로의 의견을 나누고 도우며 함께 더 나은 결과를 만들어갈 때 더 큰 가치가 생긴다고 믿습니다.
-                                앞으로도 사용자에게는 편리함을, 동료에게는 신뢰를 주는 사람으로서 함께 일하고 싶은 개발자가 되겠습니다.
-                            </p>
-                            <div class="contact">
-                                <span class="contact_btn" data-modal-path="contact.html" tabindex="0" role="button" aria-label="연락처 모달 열기">Contact</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="work_wrap_m">
-                        <div class="work_01_m" data-modal-path="work_01.html" tabindex="0" role="button" aria-label="사이버범죄신고시스템 프로젝트 상세 보기">
-                            <div class="cont_box_m">
-                                <div>
-                                    <img src="../images/work_01.png" alt="사이버범죄신고시스템 프로젝트 이미지">
+                    
+                            <div class="third_scene_bottom_right">
+                                <div class="scene_star scene_star_a">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="#ffffff">
+                                        <path d="M26 26 L0 32 L0 32 L26 38 L32 64 L32 64 L38 38 L64 32 L64 32 L38 26 L32 0 L32 0 Z"></path>
+                                    </svg>
                                 </div>
-                                <div class="work_info_m">
-                                    <p>사이버범죄신고시스템 고도화 및 유지보수</p>
-                                    <p>자세히보기</p>
+                    
+                                <div class="scene_star scene_star_b">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="#ffffff">
+                                        <path d="M30 0 L34 0 L34 30 L64 30 L64 34 L34 34 L34 64 L30 64 L30 34 L0 34 L0 30 L30 30 Z"></path>
+                                    </svg>
+                                </div>
+                    
+                                <div class="scene_star scene_star_c">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="#ffffff">
+                                        <path d="M8 10 L20 26 L0 32 L0 32 L20 36 L10 54 L26 42 L32 64 L32 64 L36 42 L52 54 L42 36 L64 32 L64 32 L42 26 L54 10 L36 20 L32 0 L32 0 L26 20 Z"></path>
+                                    </svg>
                                 </div>
                             </div>
-                        </div>
-
-                        <div class="work_02_m" data-modal-path="work_02.html" tabindex="0" role="button" aria-label="삭제지원시스템 프로젝트 상세 보기">
-                            <div class="cont_box_m">
-                                <div>
-                                    <img src="../images/work_02.png" alt="삭제지원시스템 프로젝트 이미지">
-                                </div>
-                                <div class="work_info_m">
-                                    <p>디지털성범죄피해자지원센터 삭제지원시스템 고도화</p>
-                                    <p>자세히보기</p>
-                                </div>
+                    
+                            <div class="third_scene_footer">
+                                <div>PORTFOLIO</div>
+                                <div class="contact_btn" data-modal-path="contact.html" tabindex="0" role="button" aria-label="연락처 모달 열기">Contact</div>
+                                <div>ⓒ HyeBin Seo</div>
                             </div>
                         </div>
-
-                        <div class="work_03_m" data-modal-path="work_03.html" tabindex="0" role="button" aria-label="폭력피해자 지원시설 업무관리시스템 프로젝트 상세 보기">
-                            <div class="cont_box_m">
-                                <div>
-                                    <img src="../images/work_03.png" alt="폭력피해자 지원시설 업무관리시스템 프로젝트 이미지">
-                                </div>
-                                <div class="work_info_m">
-                                    <p>충청남도 폭력피해자 지원시설 업무관리시스템 구축</p>
-                                    <p>자세히보기</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="scroll_footer">
-                        <div>PORTFOLIO</div>
-                        <div class="contact_m contact_btn" data-modal-path="contact.html" tabindex="0" role="button" aria-label="연락처 모달 열기">Contact</div>
-                        <div>ⓒ HyeBin Seo</div>
                     </div>
                 </div>
             </section>
