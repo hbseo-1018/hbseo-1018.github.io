@@ -1,4 +1,4 @@
-<div class="project_layer">
+﻿<div class="project_layer">
     <div class="project_layer_head">
         <div class="project_layer_kicker">WORK 01</div>
         <h2 class="project_layer_title" id="portfolioModalTitle">사이버범죄신고시스템 고도화 및 유지보수</h2>
@@ -39,11 +39,186 @@
             <summary>외부 제공 API 개발</summary>
             <div class="project_toggle_body">
                 <p>
-                    외부 기관 또는 타 시스템에서 활용할 수 있도록 API를 설계하고 개발한 작업을 정리하는 영역입니다.
-                    여기에는 API 개발 배경, 요청/응답 구조, 주요 파라미터, 예외 처리 방식 등을 넣으면 좋습니다.
+                    사이버사기 신고 데이터에서 계좌, 전화번호, 이메일, 가상자산 지갑주소를 추출해 외부시스템의 조회용 데이터로 적재하고, API Key 인증 기반 외부 조회 API와 호출 로그/운영 통계 기능을 구현했습니다.
                 </p>
-                <div class="project_placeholder">
-                    이후 추가 예정 예시: API 목적, 엔드포인트 구조, 인증 방식, 요청/응답 샘플, 장애 대응 방식
+                <div class="project_placeholder project_code_box">
+                    <div class="project_code_head">
+                        <span>API 인증 및 응답 처리 흐름</span>
+                    </div>
+                    <pre><code class="language-java">
+/* 외부 시스템이 api_key를 포함해 /api_url_example/v1/data 호출
+ApiKey 테이블에서 API Key 유효성 검증
+API Key가 없거나 불일치하면 401과 실패 로그 저장
+인증 성공 시 신고데이터 테이블에서 최근 3개월 간 데이터 조회
+결과를 JSON 배열로 변환해 응답
+성공/실패 여부를 별도 Log 테이블에 저장 */
+
+@SuppressWarnings("unchecked")
+@ResponseBody
+@RequestMapping(value = "/api_url_example/v1/data", method = RequestMethod.POST)
+public String ecrm_if(@RequestBody HashMap<String, String> DATA,
+            HttpServletRequest request, 
+            HttpServletResponse response, 
+            HttpSession session) throws Exception {
+    
+    JSONArray jsonArr = new JSONArray();
+    JSONArray jsonArr_log = new JSONArray();
+    JSONObject jsonInput = new JSONObject();
+    String clientIp = IPAddressUtil.getClientIp(request);
+    
+    CyberCopVO.ApiKeyVO cc_key = new ApiKeyVO();
+    CyberCopVO.ApiLogVO cc_log = new ApiLogVO();
+    cc_log.setIp_addr(clientIp);
+    cc_log.setLog_info_cn("[Request:" + DATA.toString() + "]");
+    
+    if(DATA.get("api_key") == null) {
+        jsonInput.put("status", -4);
+        jsonInput.put("message", "허용되지 않은 API KEY입니다.");
+        jsonInput.put("data", null);
+        response.setStatus(401);
+        
+        cc_log.setLog_typ_cd("API_CALL_FAIL:-4(1)");
+        cycopService.addCybercopEcrmApiLog(cc_log);
+        return jsonInput.toString();
+    } else {
+        cc_key = cycopService.getCybercopEcrmApiKey(DATA.get("api_key"));
+        if(cc_key == null) {
+            jsonInput.put("status", -4);
+            jsonInput.put("message", "허용되지 않은 API KEY입니다.");
+            jsonInput.put("data", null);
+            response.setStatus(401);
+            
+            cc_log.setLog_typ_cd("API_CALL_FAIL:-4(2)");
+            cycopService.addCybercopEcrmApiLog(cc_log);
+            return jsonInput.toString();
+        } else {
+            cc_log.setRqstr(cc_key.getTyp_cd());
+        }
+    }
+    
+    try {
+        List<CyberCopVO> cc_list = cycopService.getCybercopLastThreeMonths();
+        
+        if (cc_list.size() == 0) {
+            jsonInput.put("status", -5);
+            jsonInput.put("message", "데이터가 존재하지 않습니다.");
+            jsonInput.put("data", null);
+            response.setStatus(204);
+            
+            cc_log.setLog_typ_cd("API_CALL_FAIL:-5");
+            cycopService.addCybercopEcrmApiLog(cc_log);
+            return jsonInput.toString();
+        } else {
+            try {
+                SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+                for(CyberCopVO item : cc_list) {
+                    JSONObject jsonCycop_log = new JSONObject();
+                    jsonCycop_log.put("ID_QST", item.getId_qst());
+                    jsonCycop_log.put("FIELD_NM", item.getField_nm());
+                    jsonArr_log.add(jsonCycop_log);
+                    
+                    JSONObject jsonCycop = new JSONObject();
+                    jsonCycop.put("SEQ", item.getSeq());
+                    jsonCycop.put("ID_QST", item.getId_qst());
+                    jsonCycop.put("DTM_RGST", transFormat.format(item.getDtm_rgst()));
+                    jsonCycop.put("FIELD_TYPE", item.getField_type());
+                    jsonCycop.put("FIELD_NM", item.getField_nm());
+                    jsonCycop.put("CRE_DT", transFormat.format(item.getCre_dt()));
+                    jsonArr.add(jsonCycop);
+                }
+                
+                jsonInput.put("status", 1);
+                jsonInput.put("message", "SUCCESS");
+                jsonInput.put("data", jsonArr);
+                response.setStatus(200);
+                
+                cc_log.setLog_typ_cd("API_CALL_SUCCESS");
+                cc_log.setLog_info_cn("[Request:" + DATA.toString() + "],[Response:" + jsonArr_log.toString() + "]");
+                cycopService.addCybercopEcrmApiLog(cc_log);
+                return jsonInput.toString();
+            } catch(Exception e) {
+                jsonInput.put("status", -9);
+                jsonInput.put("message", "알 수 없는 오류입니다. 시스템에 문의 바랍니다.");
+                jsonInput.put("data", null);
+                response.setStatus(422);
+                
+                cc_log.setLog_typ_cd("API_CALL_FAIL:-9");
+                cc_log.setLog_info_cn("[Request:" + DATA.toString() + "],[Exception:" + e.toString() + "]");
+                cycopService.addCybercopEcrmApiLog(cc_log);
+                
+                return jsonInput.toString();
+            }
+        }
+        
+    } catch(Exception e) {
+        jsonInput.put("status", -9);
+        jsonInput.put("message", "알 수 없는 오류입니다. 시스템에 문의 바랍니다.");
+        jsonInput.put("data", null);
+        response.setStatus(422);
+        
+        cc_log.setLog_typ_cd("API_CALL_FAIL:-9");
+        cc_log.setLog_info_cn("[Request:" + DATA.toString() + "],[Response:" + jsonArr.toString() + "],[Exception:" + e.toString() + "]");
+        cycopService.addCybercopEcrmApiLog(cc_log);
+        
+        return jsonInput.toString();
+    }
+}                        
+                    </code></pre>
+
+                    <div class="project_code_head">
+                        <span>외부시스템 적재/수정 분기 로직</span>
+                    </div>
+                    <pre><code class="language-java">
+@Transactional(isolation=Isolation.READ_COMMITTED, rollbackFor = {Exception.class})
+@Override
+public void start() {
+    long beforeTime = System.currentTimeMillis();
+    int count = 0;
+    LocalDateTime local = LocalDateTime.now();
+    String end_date = local.format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
+    String start_date = local.minusDays(1).format(DateTimeFormatter.ofPattern("yyyyMMdd000000"));
+    List<Integer> report_ids = cycopDao.getCyberCopSendTargetReport(start_date, end_date);
+    Map<String, String> res = new HashMap<String, String>();
+    
+    if(report_ids == null || report_ids.isEmpty()) {
+        return;
+    }
+    
+    for(int report_id : report_ids) {
+        try {
+            count = cycopDao.getCyberCopQuestionTargetReportCount(report_id);
+            if(count <= 0) {
+                cycopService.pushData(report_id);
+            } else {
+                cycopService.modifyData(report_id);
+            }
+        } catch(SQLException e) {
+            if(res.size() < 10) res.put("logerr:" + report_id, "");
+        } catch(Exception e) {
+            if(res.size() < 10) res.put("logerr:" + report_id, "");
+        }
+        count = 0;
+    }
+    res.put("count", String.valueOf(report_ids.size()));
+    res.put("ms", String.valueOf(System.currentTimeMillis() - beforeTime));
+    
+    if(!res.isEmpty()) logService.addLog(null, "cybercop_processed_result", "127.0.0.1", res);
+}
+
+@Override
+public void upsertCycopData(int report_id) throws Exception {
+    int check = cycopDao.getCyberCopSendTargetReportCheck(report_id);
+    if(check > 0) {
+        int count = cycopDao.getCyberCopQuestionTargetReportCount(report_id);
+        if(count <= 0) {
+            cycopService.pushData(report_id);
+        } else {
+            cycopService.modifyData(report_id);
+        }
+    }
+}
+                    </code></pre>
                 </div>
             </div>
         </details>

@@ -188,6 +188,9 @@ async function handleModalOpen(fileName) {
     try {
         const html = await fetchModalContent(fileName);
         modalInner.innerHTML = html;
+        if (window.Prism) {
+            window.Prism.highlightAllUnder(modalInner);
+        }
     } catch (error) {
         setModalError();
     }
