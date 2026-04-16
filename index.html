@@ -119,7 +119,6 @@
             <section class="sel">
                 <div class="container third">
                     <div class="container third">
-                        <!--
                         <div class="work_title">
                             <p>WORK</p>
                             <p class="work_cv" data-modal-path="work_cv.html" tabindex="0" role="button" aria-label="경력기술서 열기">
@@ -238,92 +237,6 @@
                             <div>PORTFOLIO</div>
                             <div class="contact_m contact_btn" data-modal-path="contact.html" tabindex="0" role="button" aria-label="연락처 모달 열기">Contact</div>
                             <div>ⓒ HyeBin Seo</div>
-                        </div>
-                        -->
-                    
-                        <div class="third_scene">
-                            <div class="third_scene_top_left">
-                                <svg width="420" height="260" viewBox="0 0 420 260" xmlns="http://www.w3.org/2000/svg" aria-label="Curriculum Vitae planet ring">
-                                    <defs>
-                                      <path id="cvRingPath" d="M 70 130 A 140 44 0 1 1 350 130 A 140 44 0 1 1 70 130" />
-                                  
-                                      <mask id="outsidePlanetMask">
-                                        <rect width="100%" height="100%" fill="white"/>
-                                        <circle cx="210" cy="130" r="74" fill="black"/>
-                                      </mask>
-                                    </defs>
-                                  
-                                    <!-- 뒤쪽 고리 -->
-                                    <g transform="rotate(-8 210 130)" opacity="0.22">
-                                      <text fill="#111111" font-size="22" font-weight="700" letter-spacing="-0.02em">
-                                        <textPath href="#cvRingPath" startOffset="0%">
-                                          Curriculum Vitae * Curriculum Vitae * Curriculum Vitae * Curriculum Vitae * Curriculum Vitae * Curriculum Vitae * Curriculum Vitae * Curriculum Vitae *
-                                          <animate attributeName="startOffset" from="0%" to="-25%" dur="14s" repeatCount="indefinite"/>
-                                        </textPath>
-                                      </text>
-                                    </g>
-                                  
-                                    <!-- 행성 -->
-                                    <circle cx="210" cy="130" r="74" fill="#050505"/>
-                                  
-                                    <!-- 앞쪽 고리 -->
-                                    <g transform="rotate(-8 210 130)" mask="url(#outsidePlanetMask)">
-                                      <text fill="#111111" font-size="22" font-weight="700" letter-spacing="-0.02em">
-                                        <textPath href="#cvRingPath" startOffset="0%">
-                                          Curriculum Vitae * Curriculum Vitae * Curriculum Vitae * Curriculum Vitae * Curriculum Vitae * Curriculum Vitae * Curriculum Vitae * Curriculum Vitae *
-                                          <animate attributeName="startOffset" from="0%" to="-25%" dur="14s" repeatCount="indefinite"/>
-                                        </textPath>
-                                      </text>
-                                    </g>
-                                  </svg>
-                            </div>
-                    
-                            <div class="third_scene_center">
-                                <div class="third_scene_earth_wrap">
-                                    <model-viewer
-                                        src="../models/earth.glb"
-                                        class="third_scene_earth"
-                                        autoplay
-                                        auto-rotate
-                                        rotation-per-second="18deg"
-                                        camera-controls="false"
-                                        disable-zoom
-                                        disable-pan
-                                        disable-tap
-                                        interaction-prompt="none"
-                                        shadow-intensity="0"
-                                        exposure="1"
-                                        environment-image="neutral"
-                                        ar="false">
-                                    </model-viewer>
-                                </div>
-                            </div>
-                    
-                            <div class="third_scene_bottom_right">
-                                <div class="scene_star scene_star_a">
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="#ffffff">
-                                        <path d="M26 26 L0 32 L0 32 L26 38 L32 64 L32 64 L38 38 L64 32 L64 32 L38 26 L32 0 L32 0 Z"></path>
-                                    </svg>
-                                </div>
-                    
-                                <div class="scene_star scene_star_b">
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="#ffffff">
-                                        <path d="M30 0 L34 0 L34 30 L64 30 L64 34 L34 34 L34 64 L30 64 L30 34 L0 34 L0 30 L30 30 Z"></path>
-                                    </svg>
-                                </div>
-                    
-                                <div class="scene_star scene_star_c">
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="#ffffff">
-                                        <path d="M8 10 L20 26 L0 32 L0 32 L20 36 L10 54 L26 42 L32 64 L32 64 L36 42 L52 54 L42 36 L64 32 L64 32 L42 26 L54 10 L36 20 L32 0 L32 0 L26 20 Z"></path>
-                                    </svg>
-                                </div>
-                            </div>
-                    
-                            <div class="third_scene_footer">
-                                <div>PORTFOLIO</div>
-                                <div class="contact_btn" data-modal-path="contact.html" tabindex="0" role="button" aria-label="연락처 모달 열기">Contact</div>
-                                <div>ⓒ HyeBin Seo</div>
-                            </div>
                         </div>
                     </div>
                 </div>
