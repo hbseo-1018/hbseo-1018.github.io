@@ -50,26 +50,26 @@ ScrollTrigger.create({
 });
 
 // work hover event
-const work_a = gsap.fromTo('.work_01 .cont_box',
-    { x: '100%' },
-    { x: '0', duration: 1, stagger: 0.5 },
+const work_a = gsap.fromTo('.is-work-01 .third_trigger_inner',
+    { scale: 1 },
+    { scale: 1.08, duration: 0.35, ease: 'power2.out', paused: true },
 );
-const work_b = gsap.fromTo('.work_02 .cont_box',
-    { x: '100%' },
-    { x: '0', duration: 1, stagger: 0.5 },
+const work_b = gsap.fromTo('.is-work-02 .third_trigger_inner',
+    { scale: 1 },
+    { scale: 1.08, duration: 0.35, ease: 'power2.out', paused: true },
 );
-const work_c = gsap.fromTo('.work_03 .cont_box',
-    { x: '100%' },
-    { x: '0', duration: 1, stagger: 0.5 },
+const work_c = gsap.fromTo('.is-work-03 .third_trigger_inner',
+    { scale: 1 },
+    { scale: 1.08, duration: 0.35, ease: 'power2.out', paused: true },
 );
 
 work_a.pause();
 work_b.pause();
 work_c.pause();
 
-const work01 = document.querySelector('.work_01');
-const work02 = document.querySelector('.work_02');
-const work03 = document.querySelector('.work_03');
+const work01 = document.querySelector('.is-work-01');
+const work02 = document.querySelector('.is-work-02');
+const work03 = document.querySelector('.is-work-03');
 
 if (work01) {
     work01.addEventListener('mouseover', function () {

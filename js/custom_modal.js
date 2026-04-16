@@ -52,38 +52,38 @@ ScrollTrigger.create({
 });
 
 //work hover event
-const work_a = gsap.fromTo('.work_01 .cont_box',
-    {x:'100%'}, 
-    {x: '0',duration: 1, stagger: 0.5}, 
+const work_a = gsap.fromTo('.is-work-01 .third_trigger_inner',
+    {scale: 1},
+    {scale: 1.08, duration: 0.35, ease: 'power2.out', paused: true},
 )
-const work_b = gsap.fromTo('.work_02 .cont_box',
-    {x:'100%'}, 
-    {x: '0',duration: 1, stagger: 0.5}, 
+const work_b = gsap.fromTo('.is-work-02 .third_trigger_inner',
+    {scale: 1},
+    {scale: 1.08, duration: 0.35, ease: 'power2.out', paused: true},
 )
-const work_c = gsap.fromTo('.work_03 .cont_box',
-    {x:'100%'}, 
-    {x: '0',duration: 1, stagger: 0.5}, 
+const work_c = gsap.fromTo('.is-work-03 .third_trigger_inner',
+    {scale: 1},
+    {scale: 1.08, duration: 0.35, ease: 'power2.out', paused: true},
 )
 work_a.pause();
 work_b.pause();
 work_c.pause();
 
-document.querySelector('.work_01').addEventListener("mouseover", function () {
+document.querySelector('.is-work-01').addEventListener("mouseover", function () {
     work_a.play();
 });
-document.querySelector('.work_01').addEventListener("mouseleave", function () {
+document.querySelector('.is-work-01').addEventListener("mouseleave", function () {
     work_a.reverse();
 });
-document.querySelector('.work_02').addEventListener("mouseover", function () {
+document.querySelector('.is-work-02').addEventListener("mouseover", function () {
     work_b.play();
 });
-document.querySelector('.work_02').addEventListener("mouseleave", function () {
+document.querySelector('.is-work-02').addEventListener("mouseleave", function () {
     work_b.reverse();
 });
-document.querySelector('.work_03').addEventListener("mouseover", function () {
+document.querySelector('.is-work-03').addEventListener("mouseover", function () {
     work_c.play();
 });
-document.querySelector('.work_03').addEventListener("mouseleave", function () {
+document.querySelector('.is-work-03').addEventListener("mouseleave", function () {
     work_c.reverse();
 });
 
