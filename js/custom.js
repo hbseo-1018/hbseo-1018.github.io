@@ -208,6 +208,7 @@ function closeModal() {
 async function handleModalOpen(fileName) {
     if (!modal || !modalInner || !fileName) return;
 
+    modal.classList.toggle('is_contact_modal', fileName === 'contact.html');
     setModalLoading();
     openModal();
 

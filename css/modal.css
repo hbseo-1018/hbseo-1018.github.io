@@ -57,6 +57,21 @@ body.modal_open {
     color: #fff;
 }
 
+.portfolio_modal.is_contact_modal .portfolio_modal_inner {
+    padding: 0;
+}
+
+.portfolio_modal.is_contact_modal .portfolio_modal_dialog {
+    width: min(560px, calc(100% - 3rem));
+    height: min(48vh, 460px);
+    margin-top: 22vh;
+}
+
+.portfolio_modal.is_contact_modal .contact_layer {
+    min-height: 100%;
+    border-radius: 0;
+}
+
 .portfolio_modal_loading {
     min-height: 100%;
     display: flex;
@@ -410,6 +425,54 @@ body.modal_open {
         radial-gradient(circle at 82% 18%, rgba(235, 93, 200, 0.16), transparent 24%),
         radial-gradient(circle at 50% 100%, rgba(255, 255, 255, 0.05), transparent 30%),
         rgba(255, 255, 255, 0.03);
+}
+
+.portfolio_modal.is_contact_modal .contact_layer {
+    padding: 1.6rem 1.4rem 1.8rem;
+}
+
+.portfolio_modal.is_contact_modal .contact_layer_inner {
+    gap: 0.9rem;
+    max-width: 420px;
+}
+
+.portfolio_modal.is_contact_modal .contact_layer_kicker {
+    font-size: 0.72rem;
+}
+
+.portfolio_modal.is_contact_modal .contact_layer_title {
+    font-size: 1.7rem;
+}
+
+.portfolio_modal.is_contact_modal .contact_info_box {
+    gap: 0.6rem;
+    margin-top: 0.2rem;
+}
+
+.portfolio_modal.is_contact_modal .contact_info_link {
+    padding: 0.8rem 0.9rem;
+}
+
+.portfolio_modal.is_contact_modal .contact_info_label {
+    font-size: 0.72rem;
+}
+
+.portfolio_modal.is_contact_modal .contact_info_value {
+    font-size: 0.95rem;
+}
+
+.portfolio_modal.is_contact_modal .contact_layer_orbit {
+    right: -78px;
+    bottom: 10px;
+    width: 230px;
+    height: 96px;
+}
+
+.portfolio_modal.is_contact_modal .contact_layer_planet {
+    right: 50px;
+    bottom: 63px;
+    width: 9px;
+    height: 9px;
 }
 
 .contact_layer_inner {

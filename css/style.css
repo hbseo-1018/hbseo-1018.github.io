@@ -31,6 +31,20 @@
     font-style: normal
 }
 
+@font-face {
+    font-family: "Impact Label Font";
+    src: url("../fonts/Impact%20Label.ttf") format("truetype");
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Impact Label Reversed";
+    src: url("../fonts/Impact%20Label%20Reversed.ttf") format("truetype");
+    font-weight: 400;
+    font-style: normal;
+}
+
 * {
     outline: 0;
     margin: 0;
@@ -106,11 +120,12 @@ a, a:hover, a:active {text-decoration: none; outline: none}
     justify-content: center;
     align-items: center;
 }
-.index_full p>span{
-    font-family: 'Zephyr', serif;
+.index_full .index_txt {
+    font-family: 'Impact Label Font', 'Impact Label', Impact, sans-serif;
     color: #fff;
-    font-size: 1rem;
+    font-size: 1.15rem;
     opacity: 0.9;
+    letter-spacing: 0.02em;
 }
 .index_full .cursor {
     border-left: 1px solid #fff;

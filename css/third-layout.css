@@ -130,8 +130,6 @@
     stroke-width: 1.4;
     stroke-linecap: round;
     stroke-linejoin: round;
-    stroke-dasharray: 120;
-    stroke-dashoffset: 0;
     animation: libraLineGlow 4.8s ease-in-out infinite;
 }
 
@@ -198,12 +196,21 @@
 .is-work-03 .orbit_light {
     fill: none;
     stroke: #ffffff;
-    stroke-width: 5;
+    stroke-width: 2.6;
     stroke-linecap: round;
-    stroke-dasharray: 18 190;
+    stroke-dasharray: 12 196;
     stroke-dashoffset: 0;
-    filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.95));
-    animation: orbitLightFlow 2.4s linear infinite;
+    opacity: 1;
+    filter:
+        drop-shadow(0 0 3px rgba(255, 255, 255, 0.95))
+        drop-shadow(0 0 8px rgba(255, 255, 255, 0.72));
+    animation: orbitLightFlow 5.2s linear infinite;
+}
+
+.is-work-03 .orbit_light_b {
+    stroke-dasharray: 10 132;
+    animation-duration: 4.6s;
+    animation-delay: -1.2s;
 }
 
 /* Text cells */
@@ -245,9 +252,8 @@
 .third_cv_cell .work_cv {
     padding: 0;
     background: transparent;
-    border-radius: 0;
+    border: 0;
     transform: none;
-    filter: drop-shadow(0 10px 18px rgba(0, 0, 0, 0.18));
 }
 
 .third_cv_cell .work_cv:hover {
@@ -260,12 +266,25 @@
 }
 
 .third_cv_cell .work_cv_text {
+    background: none;
+    color: #ffffff;
+    font-family: 'Poppins', sans-serif;
     font-size: 2vw;
     line-height: 1;
-    letter-spacing: -0.04em;
-    text-shadow:
-        0 4px 12px rgba(0, 0, 0, 0.14),
-        0 14px 28px rgba(0, 0, 0, 0.1);
+    letter-spacing: 0;
+    -webkit-text-fill-color: #ffffff;
+    animation: none;
+}
+
+.third_cv_cell .work_cv:hover .work_cv_text {
+    background: linear-gradient(90deg, #3D35BE 0%, #7a56e8 50%, #eb5dc8 100%);
+    background-size: 200% 100%;
+    background-position: 0% 50%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    color: transparent;
+    animation: workCvGradientFlow 1.6s ease-in-out infinite;
 }
 
 .third_contact_cell .contact {
@@ -282,7 +301,7 @@
     border-radius: 50%;
     font-family: 'Zephyr', serif;
     font-size: clamp(2.2rem, 3vw, 3.7rem);
-    letter-spacing: -0.08em;
+    letter-spacing: 0.01em;
     cursor: pointer;
 }
 
@@ -298,10 +317,13 @@
 
 @keyframes planetRipple {
     0% {
-        opacity: 0;
-        transform: translate(-50%, -50%) translateY(2px) scale(0.52);
+        opacity: 0.78;
+        transform: translate(-50%, -50%) translateY(2px) scale(0.26);
     }
-    16% { opacity: 1; }
+    14% {
+        opacity: 1;
+        transform: translate(-50%, -50%) translateY(0) scale(0.48);
+    }
     50% {
         opacity: 0.58;
         transform: translate(-50%, -50%) translateY(-10px) scale(1.2);
@@ -320,11 +342,9 @@
 @keyframes libraLineGlow {
     0%, 100% {
         opacity: 0.52;
-        stroke-dashoffset: 0;
     }
     50% {
         opacity: 0.88;
-        stroke-dashoffset: -18;
     }
 }
 
@@ -475,4 +495,17 @@
     .is-work-02 .third_trigger_inner::after {
         display: none;
     }
+
+    .is-work-02 .libra_line {
+        stroke-width: 1.2;
+    }
+
+    .is-work-02 .libra_star {
+        animation-name: libraStarGlowMobile;
+    }
+}
+
+@keyframes libraStarGlowMobile {
+    0%, 100% { opacity: 0.66; }
+    50% { opacity: 1; }
 }
