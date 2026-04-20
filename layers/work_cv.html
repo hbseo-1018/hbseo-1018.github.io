@@ -1,67 +1,220 @@
-<div class="project_layer">
-    <div class="project_layer_head">
-        <div class="project_layer_kicker">CAREER</div>
-        <h2 class="project_layer_title" id="portfolioModalTitle">경력기술서</h2>
-        <p class="project_layer_desc">
-            백엔드 개발자로서 수행한 프로젝트, 담당 역할, 개선 경험을 정리하는 영역입니다.
-            아래 항목을 기준으로 경력기술서 내용을 단계적으로 확장할 수 있습니다.
+<div class="cv_layer">
+    <header class="cv_head">
+        <div class="cv_kicker">CURRICULUM VITAE</div>
+        <h2 class="cv_title" id="portfolioModalTitle">경력기술서</h2>
+        <p class="cv_intro">
+            공공기관 SI 프로젝트에서 백엔드 개발, 외부 시스템 연동, 데이터 구조 개선, 성능 최적화, 배포 및 운영 대응을 수행했습니다.
+            Java Spring 기반 유지보수·고도화 프로젝트와 Node.js Express 기반 시스템 구축 프로젝트를 경험했습니다.
         </p>
-    </div>
+    </header>
 
-    <section class="project_panel project_toggle_panel">
-        <h3 class="project_panel_title">경력기술서 상세</h3>
+    <section class="cv_summary">
+        <div class="cv_summary_text">
+            <span>Backend Developer</span>
+            <strong>공공기관 업무 시스템 고도화와 운영 안정화 경험</strong>
+        </div>
+        <div class="cv_stack">
+            <span>Java Spring</span>
+            <span>전자정부프레임워크</span>
+            <span>Node.js Express</span>
+            <span>TypeScript</span>
+            <span>JavaScript</span>
+            <span>MyBatis</span>
+            <span>TiberoDB</span>
+            <span>MariaDB</span>
+            <span>Redis</span>
+            <span>Socket.io</span>
+        </div>
+    </section>
 
-        <details class="project_toggle_item" open>
-            <summary>경력 요약</summary>
-            <div class="project_toggle_body">
-                <p>
-                    여기에 전체 경력 개요, 총 경력 기간, 주력 기술 스택, 업무 성향 등을 넣으면 됩니다.
-                </p>
-                <div class="project_placeholder">
-                    예시: Java Spring, Node.js, MariaDB 기반 백엔드 개발 및 유지보수/고도화 수행
+    <section class="cv_section">
+        <div class="cv_section_head">
+            <span>01</span>
+            <h3>수행 프로젝트</h3>
+        </div>
+
+        <div class="cv_timeline">
+            <article class="cv_project">
+                <div class="cv_project_period">2022.05 - 2024.12</div>
+                <div class="cv_project_body">
+                    <div class="cv_project_title_row">
+                        <h4>경찰청 사이버범죄신고시스템 고도화 및 유지보수</h4>
+                        <span>팀 구성원 3명</span>
+                    </div>
+                    <p class="cv_project_stack">
+                        Eclipse(전자정부프레임워크 3.9), Java Spring, JavaScript, MyBatis, TiberoDB, MariaDB
+                    </p>
+
+                    <div class="cv_work_group">
+                        <h5>외부 제공 API 개발</h5>
+                        <p>
+                            사이버캅 시스템의 데이터를 수집한 후, 외부에 제공하는 배치 기반 API, 실시간 응답 API 개발.
+                            API 설계 초기 단계부터 요구사항 정의, URI 및 파라미터 구조, 응답 포맷, 오류 코드 체계 등 명세서 직접 작성 및 유지관리.
+                        </p>
+                    </div>
+
+                    <div class="cv_work_group">
+                        <h5>외부 시스템 연동</h5>
+                        <ul>
+                            <li>경찰청 사이버수사국 사이버캅 시스템 DB to DB 연동.</li>
+                            <li>경찰청 사이버수사국의 SSO 연동.</li>
+                            <li>ComTrue사의 신분증 OCR API 연동.</li>
+                            <li>Google Cloud Translation API 연동.</li>
+                        </ul>
+                    </div>
+
+                    <div class="cv_work_group">
+                        <h5>대용량 데이터 쿼리 성능 최적화</h5>
+                        <p>
+                            100만 건+ 계좌 정보 테이블의 암호화 컬럼으로 인해 페이지 응답 시간 30초 이상 발생.
+                            인덱스 생성하여 단일 비교 방식으로 조회 쿼리를 튜닝, 응답 시간을 30초에서 5초 미만으로 단축.
+                        </p>
+                    </div>
+
+                    <div class="cv_work_group">
+                        <h5>데이터 구조 최적화</h5>
+                        <p>시스템 전반에서 사용되던 경찰서 하드 코딩 데이터(JSON)를 DB화하여 관리 가능한 구조로 개선.</p>
+                    </div>
+
+                    <div class="cv_work_group">
+                        <h5>웹 에디터 시스템 업그레이드</h5>
+                        <p>기존 무료 웹 에디터(CKEditor)의 보안취약점 사유로 Namo WebEditor(상용)로 교체 작업.</p>
+                    </div>
+
+                    <div class="cv_work_group">
+                        <h5>파일 관리 시스템 성능 최적화</h5>
+                        <p>
+                            파일 다운로드 완료 후 서버에 잔존하던 임시 파일로 인한 디스크 사용량 증가 및 장기 누적 문제 발생.
+                            다운로드 완료 시점에 파일 자동 삭제 처리 구현, 장기 누적 파일은 배치 Scheduler를 통해 정리.
+                            적용 후 서버 임시 파일 스토리지 사용량을 평균 10-15% 절감.
+                        </p>
+                    </div>
+
+                    <div class="cv_work_group">
+                        <h5>키워드 알림 시스템 개발</h5>
+                        <p>
+                            민원인이 신고하는 내용 중 특정 키워드를 설정하여 SMS 알림 받도록 구현.
+                            알림 받을 휴대폰 번호를 사용자가 직접 설정하여 해당 번호로 발송.
+                            설정된 키워드를 한눈에 확인할 수 있도록 JavaScript를 이용한 형광 처리.
+                        </p>
+                    </div>
                 </div>
-            </div>
-        </details>
+            </article>
 
-        <details class="project_toggle_item">
-            <summary>주요 프로젝트</summary>
-            <div class="project_toggle_body">
-                <p>
-                    여기에 핵심 프로젝트 목록과 각 프로젝트에서 맡은 역할을 정리하면 됩니다.
-                </p>
-                <div class="project_placeholder">
-                    예시: 사이버범죄신고시스템, 삭제지원시스템, 폭력피해자 지원시설 업무관리시스템 등
+            <article class="cv_project">
+                <div class="cv_project_period">2024.01 - 2025.07</div>
+                <div class="cv_project_body">
+                    <div class="cv_project_title_row">
+                        <h4>디지털성범죄피해자지원센터 삭제지원시스템 고도화 및 유지보수</h4>
+                        <span>팀 구성원 3명</span>
+                    </div>
+                    <p class="cv_project_stack">VSCode, Node.js Express, MariaDB</p>
+
+                    <div class="cv_work_group">
+                        <h5>만족도 조사 시스템 고도화</h5>
+                        <p>
+                            기존에는 만족도 조사의 중단 기능이 부재하여 설문조사 조기 종료 불가능.
+                            대기중, 진행중, 완료, 중단 분류한 상태값을 DB에 추가.
+                            Scheduler에 매일 0시마다 만족도 조사 DB를 스캔하여 사용자가 지정한 기간이 지난 경우 상태 값 변경하도록 구현.
+                        </p>
+                    </div>
+
+                    <div class="cv_work_group">
+                        <h5>사용자 입력 조건 기반 통계 집계 및 조회 기능 구현</h5>
+                        <p>
+                            사용자가 화면에서 기간, 유형, 항목, 인덱스 등 조회 조건을 직접 선택하면,
+                            선택값을 기준으로 통계 API를 호출하고 DB 데이터를 집계해 화면 테이블에 렌더링하는 통계 조회 기능을 구현.
+                            프론트엔드에서는 선택 조건 검증과 API 호출을 담당하고, 백엔드에서는 기간 조건에 맞는 상담·삭제·모니터링 데이터를 조회한 뒤 항목별 합계를 계산하도록 구성.
+                        </p>
+                    </div>
+
+                    <div class="cv_work_group">
+                        <h5>데이터 무결성 강화</h5>
+                        <p>사례번호 중복 검사 기능이 없어 필요성을 제안하여 개발.</p>
+                    </div>
+
+                    <div class="cv_work_group">
+                        <h5>불법성 증명 공문 관리 및 문서 자동화 기능 개발</h5>
+                        <p>
+                            디지털 성범죄 피해 지원 업무에서 불법성 증명 공문 요청, URL 수집, 완료 처리, 통계 조회, 공문 PDF 생성까지 이어지는 운영 흐름을 웹 기반 관리 기능으로 구현.
+                            관리자가 공문 건을 등록한 뒤 대상 URL과 삭제 완료 내역을 관리할 수 있으며, 엑셀 업로드·다운로드와 PDF 공문 생성 기능을 통해 반복적인 문서 작성 업무를 자동화하도록 구현.
+                        </p>
+                    </div>
+
+                    <div class="cv_work_group">
+                        <h5>토큰 기반 AES 암호화를 적용해 Form 민감 데이터 전송 보안 강화</h5>
+                        <p>
+                            상담 확인 Form에서 비밀번호가 평문으로 서버에 전달되는 구조를 개선하기 위해,
+                            Redis 기반의 단기 유효 토큰과 AES-256-CBC 암호화를 결합한 전송 보안 로직을 구현.
+                            클라이언트가 Form 제출 전 서버에서 발급받은 일회성 토큰과 AES Key를 이용해 비밀번호를 암호화하고,
+                            서버는 전달받은 토큰으로 Redis에 저장된 Key를 조회해 복호화한 뒤 기존 로그인 검증 로직을 수행하도록 개선.
+                        </p>
+                    </div>
                 </div>
-            </div>
-        </details>
+            </article>
 
-        <details class="project_toggle_item">
-            <summary>담당 업무 및 역할</summary>
-            <div class="project_toggle_body">
-                <p>
-                    여기에 API 개발, 통계 기능 구현, 성능 최적화, 보안 강화, 실시간 알림 기능 개발 등
-                    실제 담당 업무를 구체적으로 작성하면 됩니다.
-                </p>
-            </div>
-        </details>
+            <article class="cv_project">
+                <div class="cv_project_period">2025.03 - 2025.06</div>
+                <div class="cv_project_body">
+                    <div class="cv_project_title_row">
+                        <h4>충청남도 폭력피해자 지원시설 업무관리시스템 구축 및 유지보수</h4>
+                        <span>팀 구성원 7명</span>
+                    </div>
+                    <p class="cv_project_stack">Cursor(VSCode), Node.js Express, TypeScript, MariaDB</p>
 
-        <details class="project_toggle_item">
-            <summary>성과 및 개선 내용</summary>
-            <div class="project_toggle_body">
-                <p>
-                    여기에 성능 개선 수치, 자동화 효과, 운영 효율 향상, 사용자 편의성 개선 결과 등을 넣으면 됩니다.
-                </p>
-            </div>
-        </details>
+                    <div class="cv_work_group">
+                        <h5>Socket.io 기반 사용자별 실시간 알림 기능을 구현</h5>
+                        <p>
+                            상담 담당자 배정, 결재 요청, 회원가입 승인 요청 등 즉시 확인이 필요한 이벤트가 발생하면 알림을 먼저 DB에 저장하고,
+                            저장된 알림 데이터를 사용자 ID 기반 room으로 emit하여 대상 사용자에게만 전달.
+                            Redis Adapter를 적용해 서버 확장 시에도 Socket.io 이벤트가 인스턴스 간 공유될 수 있도록 구성.
+                            클라이언트에서는 WebSocket 연결 후 join(userId) 이벤트로 개인 room에 입장하고 notification 이벤트 수신 시 알림 목록, 미확인 카운트, toast UI를 즉시 갱신하도록 처리.
+                        </p>
+                    </div>
 
-        <details class="project_toggle_item">
-            <summary>기술 스택</summary>
-            <div class="project_toggle_body">
-                <p>
-                    여기에 Java, Spring, MyBatis, MariaDB, MongoDB, Node.js, TypeScript, Socket.io 등
-                    사용 기술을 목적과 함께 정리하면 좋습니다.
-                </p>
+                    <div class="cv_work_group">
+                        <h5>유관 기관 하드 코딩 데이터 구조 개선 및 NAVER 지도API 연동</h5>
+                        <p>
+                            프론트에서 하드 코딩된 배열 리스트였던 기관 주소 리스트를 DB화.
+                            시스템에서 관리자가 주소API를 통해 기관을 등록하면, 사용자 게시판에서 지도API로 표현하는 구조로 변경.
+                        </p>
+                    </div>
+
+                    <div class="cv_work_group">
+                        <h5>상담원-내담자 간 댓글 기능 개발</h5>
+                        <p>하나의 상담에 대하여 상담원-내담자 간 양방향 소통 구조 댓글 기능 개발.</p>
+                    </div>
+                </div>
+            </article>
+        </div>
+    </section>
+
+    <section class="cv_section cv_etc_section">
+        <div class="cv_section_head">
+            <span>02</span>
+            <h3>기타</h3>
+        </div>
+
+        <div class="cv_etc_grid">
+            <div class="cv_etc_block">
+                <h4>배포 및 운영</h4>
+                <ul>
+                    <li>Linux 서버 환경에서 WAR 파일 배포 및 운영 반영 수행</li>
+                    <li>FileZilla를 활용한 FTP 방식의 파일 업로드 및 서버 반영 수행</li>
+                    <li>고객사 현장 방문 기술지원 및 요구사항 대응</li>
+                    <li>TeamViewer 기반 원격 기술지원 및 장애 진단</li>
+                    <li>시스템 보안 점검 및 결과 보고서 작성 수행</li>
+                </ul>
             </div>
-        </details>
+
+            <div class="cv_etc_block">
+                <h4>프로젝트 관리</h4>
+                <ul>
+                    <li>공공기관 SI프로젝트 감리 참여 경험(개발 기능 부문)</li>
+                    <li>사업 제안서 및 보고서, 발표본 제작 참여 경험(개발 기능 부문)</li>
+                    <li>개발 기술 관련 문서 작성(API 명세서 등)</li>
+                </ul>
+            </div>
+        </div>
     </section>
 </div>

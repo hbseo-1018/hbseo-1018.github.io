@@ -248,6 +248,25 @@ a, a:hover, a:active {text-decoration: none; outline: none}
     text-align: center;
     font-weight: 600;
 }
+.info_box .underline .heart_point {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    color: transparent;
+    animation: none;
+}
+.info_box .underline .heart_point::before {
+    content: "\1F49C";
+    position: absolute;
+    inset: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #7a22d8;
+    transform-origin: 50% 55%;
+    animation: softHeartbeat 2.8s ease-in-out infinite;
+}
 .info_box .underline .text_01 svg{
     width: 5vw;
     animation: rotate_svg 4s ease-in-out infinite; 
@@ -526,8 +545,14 @@ a, a:hover, a:active {text-decoration: none; outline: none}
         width: 480px;
     }
     .solar_wrap .solar_title span {
-        font-size: 3rem;
-    }.info_title .info_text {
+        display: block;
+        margin-top: 1.1rem;
+        font-size: clamp(1.2rem, 5.4vw, 2rem);
+        line-height: 1.1;
+        white-space: nowrap;
+        text-align: center;
+    }
+    .info_title .info_text {
         font-size: 10vw;
         line-height: 9vw;
     }
@@ -886,14 +911,20 @@ a, a:hover, a:active {text-decoration: none; outline: none}
         display: block;
     }
     .solar_wrap .solar_title {
-        font-size: 5rem;
-        line-height: 4rem;
+        font-size: clamp(4rem, 20vw, 5rem);
+        line-height: 0.86;
     }
     .solar_system .orbit {
         height: 115px;
         width: 350px;
     }
     .solar_wrap .solar_title span {
-        font-size: 2rem;
+        font-size: clamp(1.1rem, 5.2vw, 1.45rem);
     }
+}
+
+@keyframes softHeartbeat {
+    0%, 18%, 100% { transform: scale(1); }
+    7% { transform: scale(1.08); }
+    12% { transform: scale(1); }
 }

@@ -1,7 +1,10 @@
 <div class="project_layer">
     <div class="project_layer_head">
-        <div class="project_layer_kicker">WORK 02</div>
-        <h2 class="project_layer_title" id="portfolioModalTitle">디지털성범죄피해자지원센터 삭제지원시스템 고도화</h2>
+        <div class="project_layer_kicker">
+            <span>PROJECT 02</span>
+        </div>
+        <p class="project_security_note">모든 예제 코드와 쿼리는 보안 및 기밀유지를 위해 일부 익명화·변형하여 작성했습니다.</p>
+        <h2 class="project_layer_title" id="portfolioModalTitle">디지털성범죄피해자지원센터 삭제지원시스템 유지보수 및 고도화</h2>
         <p class="project_layer_desc">
             조건 기반 통계, 문서 자동화, 전송 데이터 보안 강화를 중심으로 고도화를 수행한 프로젝트입니다.
             아래에서 수행 작업별 상세 내용을 토글 형식으로 확인할 수 있습니다.
@@ -14,7 +17,7 @@
             <div class="project_bullet_list">
                 <div class="project_bullet_item">사용자 입력 조건 기반 통계 집계 및 조회 기능 구현</div>
                 <div class="project_bullet_item">불법성 증명 공문 관리 및 문서 자동화 기능 개발</div>
-                <div class="project_bullet_item">토큰 기반 암호화 적용으로 Form 전송 데이터 보안 강화</div>
+                <div class="project_bullet_item">토큰 기반 AES 암호화를 적용해 Form 민감 데이터 전송 보안 강화</div>
             </div>
         </section>
 
@@ -34,16 +37,150 @@
     <section class="project_panel project_toggle_panel">
         <h3 class="project_panel_title">수행 작업 상세</h3>
 
-        <details class="project_toggle_item" open>
+        <details class="project_toggle_item">
             <summary>사용자 입력 조건 기반 통계 집계 및 조회 기능 구현</summary>
             <div class="project_toggle_body">
                 <p>
-                    사용자가 직접 선택한 조건을 기준으로 통계를 집계하고 화면에 조회할 수 있도록 구현한 내용을 정리하는 영역입니다.
-                    조건값이 어떤 방식으로 전달되고, 어떤 집계 기준으로 결과가 출력되는지 흐름 중심으로 작성하면 좋습니다.
+                    사용자가 화면에서 기간, 유형, 항목, 인덱스 등 조회 조건을 직접 선택하면, 선택값을 기준으로 통계 API를 호출하고 DB 데이터를 집계해 화면 테이블에 렌더링하는 통계 조회 기능을 구현했습니다.
+                    <br>프론트엔드에서는 선택 조건 검증과 API 호출을 담당하고, 백엔드에서는 기간 조건에 맞는 상담·삭제·모니터링 데이터를 조회한 뒤 항목별 합계를 계산하도록 구성했습니다.
                 </p>
-                <div class="project_placeholder">
-                    이후 추가 예정 예시: 검색 조건 흐름, 집계 쿼리 구조, 화면 출력 방식, 성능 고려 사항
-                </div>
+                <div class="project_placeholder project_code_box">
+                    <div class="project_code_head">
+                        <span>사용자 조건 선택 화면</span>
+                    </div>
+                    <pre><code class="language-html">
+&lt;input class="start-date" type="text" autocomplete="off"&gt;
+&lt;input class="end-date" type="text" autocomplete="off"&gt;
+
+&lt;button class="btn primary" onclick="searchStats(this);"&gt;
+  조회
+&lt;/button&gt;
+
+&lt;select id="stats-type" onchange="changeStatsType()"&gt;
+  ...
+&lt;/select&gt;
+
+&lt;select id="stats-category" onchange="changeStatsCategory()"&gt;
+  ...
+&lt;/select&gt;
+
+&lt;select id="stats-index"&gt;&lt;/select&gt;
+                    </code></pre>
+                    <div class="project_code_head">
+                        <span>조회 버튼 클릭 시 선택 조건으로 통계 호출</span>
+                    </div>
+                    <pre><code class="language-javascript">
+async function searchStats(button) {
+    const section = $(button).closest('section');
+    const sectionId = section.attr('id');
+    const startDate = section.find('.start-date').val();
+    const endDate = section.find('.end-date').val();
+
+    const handlers = {
+        'summary-stats': renderSummaryStats,
+        'channel-stats': renderChannelStats,
+        'member-stats': renderMemberStats,
+    };
+
+    if (!handlers[sectionId]) {
+        return;
+    }
+
+    blockView(true);
+    await handlers[sectionId](startDate, endDate);
+    blockView(false);
+}
+                    </code></pre>
+                    <div class="project_code_head">
+                        <span>선택한 조건을 API로 전달</span>
+                    </div>
+                    <pre><code class="language-javascript">
+function getStatistics(startDate, endDate) {
+    return new Promise((resolve) => {
+        $.ajax({
+            type: 'POST',
+            url: '/api/stats/search',
+            data: { startDate, endDate },
+            success: data => resolve(data),
+            error: () => resolve(false)
+        });
+    });
+}
+                    </code></pre>
+
+                    <div class="project_code_head">
+                        <span>서버에서 조건 기반 통계 집계</span>
+                    </div>
+                    <pre><code class="language-javascript">
+module.exports.getStatistics = async (req, res) => {
+    const { startDate, endDate } = req.body;
+
+    try {
+        const users = await statsDao.findActiveUsers();
+        const rows = await statsDao.findStatsByPeriod(startDate, endDate);
+
+        const result = {
+            total: {
+                data: {
+                    groupA: {},
+                    groupB: {}
+                }
+            }
+        };
+
+        users.forEach(user => {
+            result[user.id] = {
+                name: user.name,
+                data: {
+                    userNo: user.userNo,
+                    total: 0
+                }
+            };
+        });
+
+        rows.forEach(row => {
+            if (!result[row.userId]) {
+                return;
+            }
+
+            const group = resolveGroup(result[row.userId], row.typeCode);
+            result.total.data[group].total = (result.total.data[group].total || 0) + 1;
+            result[row.userId].data.total += 1;
+        });
+
+        send(res, 200, result);
+    } catch (error) {
+        send(res, 500, {
+            message: '통계 조회 중 오류가 발생했습니다.'
+        });
+    }
+};
+                    </code></pre>
+                 </div>
+
+                 <div class="project_placeholder project_code_box">
+                    <div class="project_code_head">
+                        <span>DB 조회 조건 적용</span>
+                    </div>
+                    <pre><code class="language-javascript">
+module.exports.findStatisticsRows = async function(startDate, endDate) {
+    const period = {
+        startDate: new Date(startDate),
+        endDate: new Date(endDate)
+    };
+
+    const [historyRows, monitoringRows] = await Promise.all([
+        statsDao.findHistoryRows(period),
+        statsDao.findMonitoringRows(period)
+    ]);
+
+    return {
+        history: historyRows,
+        monitoring: monitoringRows
+    };
+};
+                    </code></pre>
+                 </div>
             </div>
         </details>
 
@@ -51,25 +188,380 @@
             <summary>불법성 증명 공문 관리 및 문서 자동화 기능 개발</summary>
             <div class="project_toggle_body">
                 <p>
-                    공문 생성, 관리, 출력 또는 자동화 처리 흐름을 정리하는 영역입니다.
-                    문서 생성 규칙, 상태 관리, 반복 업무 축소 효과를 함께 보여주면 전달력이 좋습니다.
+                    디지털 성범죄 피해 지원 업무에서 불법성 증명 공문 요청, URL 수집, 완료 처리, 통계 조회, 공문 PDF 생성까지 이어지는 운영 흐름을 웹 기반 관리 기능으로 구현했습니다.
+                    <br>관리자가 공문 건을 등록한 뒤 대상 URL과 삭제 완료 내역을 관리할 수 있으며, 엑셀 업로드·다운로드와 PDF 공문 생성 기능을 통해 반복적인 문서 작성 업무를 자동화하도록 구현했습니다.
                 </p>
-                <div class="project_placeholder">
-                    이후 추가 예정 예시: 공문 작성 프로세스, 자동 생성 로직, 관리 화면 흐름, 운영 개선 효과
+                <div class="project_placeholder project_code_box">
+                <div class="project_code_head">
+                    <span>공문 PDF 자동 생성 로직</span>
                 </div>
+                <pre><code class="language-javascript">
+// 입력값을 검증한 뒤 미리보기 화면을 열고, 사용자가 확정하면 서버에서 PDF를 생성합니다.
+async function createDocument() {
+    const formData = collectDocumentForm();
+    const validation = validateDocumentForm(formData);
+
+    if (!validation.valid) {
+        toastr.error(validation.message);
+        return;
+    }
+
+    openDocumentPreview(formData, async () => {
+        const reason = await openReasonModal();
+        const query = new URLSearchParams({
+            data: JSON.stringify(formData),
+            reason
+        });
+
+        downloadUrl(`/api/documents/${documentId}/pdf?${query.toString()}`);
+        closeDocumentModal();
+    });
+}
+
+function validateDocumentForm(data) {
+    if (!data.date) return { valid: false, message: '날짜를 입력하세요.' };
+    if (!data.receiver) return { valid: false, message: '수신처를 입력하세요.' };
+    if (!data.address) return { valid: false, message: '주소를 입력하세요.' };
+    if (!data.title) return { valid: false, message: '제목을 입력하세요.' };
+    if ((data.items || []).length > 20) return { valid: false, message: '상세내역은 최대 20개까지 입력 가능합니다.' };
+
+    return { valid: true };
+}
+
+function openDocumentPreview(data, onConfirm) {
+    const query = new URLSearchParams({ data: JSON.stringify(data) });
+
+    $('#preview-modal .confirm').off('click').on('click', onConfirm);
+    $('#preview-frame').attr('src', `/preview/document?${query.toString()}`);
+    $('#preview-modal').modal('show');
+}
+
+module.exports.downloadDocumentPdf = async function(req, res) {
+    try {
+        const documentId = req.params.documentId;
+        const payload = JSON.parse(req.query.data || '{}');
+        const pdfPath = await reportService.createDocumentPdf(payload);
+
+        res.setHeader('Content-Disposition', `attachment; filename=document_${documentId}.pdf`);
+        res.setHeader('Content-Type', 'application/octet-stream');
+
+        fs.createReadStream(pdfPath)
+            .on('close', () => fs.unlink(pdfPath, () => {}))
+            .pipe(res);
+
+        logService.addLog(req.session.userId, 'download_document_pdf', {
+            documentId,
+            reason: req.query.reason
+        });
+    } catch (error) {
+        send(res, 400, { message: 'PDF 생성 중 오류가 발생했습니다.' });
+    }
+};
+
+module.exports.createDocumentPdf = function(data) {
+    const outputPath = fileService.createTempPath('pdf');
+    const query = new URLSearchParams({ data: JSON.stringify(data) });
+    const url = `${config.domain}/report/document?${query.toString()}`;
+
+    return reportRenderer.render(url, outputPath);
+};
+                </code></pre>
+                </div>
+
+                <div class="project_placeholder project_code_box">
+                <div class="project_code_head">
+                    <span>URL 대상 자동 편입 로직</span>
+                </div>
+                <pre><code class="language-javascript">
+// 기준 도메인과 필터 조건에 맞는 URL을 찾아 문서 대상 목록에 자동 등록합니다.
+module.exports.addTargetsByDomain = async function(documentId, groupId, filters) {
+    const db = await getDb({ transaction: true });
+
+    try {
+        const domains = await targetDao.findDomains(db, groupId);
+        if (!domains.length) {
+            await db.commit();
+            return true;
+        }
+
+        const targets = await targetDao.findOpenTargets(db, {
+            domains,
+            ageType: filters.ageType,
+            numberType: filters.numberType,
+            statusCode: filters.statusCode
+        });
+
+        const rows = targets
+            .filter(target => matchesNumberFilter(target.historyList, filters.numberType))
+            .map(target => [
+                documentId,
+                target.caseId,
+                target.targetId,
+                filters.numberType
+            ]);
+
+        if (rows.length) {
+            await documentDao.addTargetRows(db, rows);
+        }
+
+        await db.commit();
+        return true;
+    } catch (error) {
+        await db.rollback();
+        throw error;
+    }
+};
+
+function matchesNumberFilter(historyJson, numberType) {
+    if (!numberType || numberType === 'all') {
+        return true;
+    }
+
+    const historyList = JSON.parse(historyJson || '[]');
+    const hasCaseNumber = historyList.some(item => !StringUtils.isBlank(item.caseNo));
+
+    return numberType === 'exists' ? hasCaseNumber : !hasCaseNumber;
+}
+                </code></pre>
+                </div>
+
+                <div class="project_placeholder project_code_box">
+                <div class="project_code_head">
+                    <span>URL 목록 조회/검색 로직</span>
+                </div>
+                <pre><code class="language-sql">
+-- 문서에 연결된 URL 목록을 조회하면서 사건번호, 담당자, 유형, JSON 필드, URL을 통합 검색합니다.
+SELECT t.target_id,
+       t.document_id,
+       t.case_id,
+       c.case_no,
+       c.support_type,
+       c.age_type,
+       c.status_code,
+       c.history_json,
+       COALESCE(s.url, m.url) AS url,
+       managers.owner_names,
+       managers.worker_names
+FROM DocumentTarget t
+LEFT JOIN CaseInfo c
+       ON t.case_id = c.case_id
+LEFT JOIN SiteTarget s
+       ON t.site_target_id = s.site_target_id
+LEFT JOIN ManualTarget m
+       ON t.manual_target_id = m.manual_target_id
+LEFT JOIN ManagerSummary managers
+       ON managers.case_id = c.case_id
+WHERE t.document_id = :documentId
+  AND (
+       c.case_no LIKE :keyword
+    OR managers.owner_names LIKE :keyword
+    OR managers.worker_names LIKE :keyword
+    OR c.support_type LIKE :keyword
+    OR c.age_type LIKE :keyword
+    OR JSON_EXTRACT(c.history_json, '$[*].dept') LIKE :keyword
+    OR JSON_EXTRACT(c.history_json, '$[*].caseNo') LIKE :keyword
+    OR c.status_code LIKE :keyword
+    OR COALESCE(s.url, m.url) LIKE :keyword
+  )
+ORDER BY c.case_no
+LIMIT :offset, :pageSize;
+                </code></pre>
+                </div>
+
+                <div class="project_placeholder project_code_box">
+                    <div class="project_code_head">
+                        <span>엑셀 업로드 기반 완료 관리 등록</span>
+                    </div>
+                    <pre><code class="language-javascript">
+// 엑셀을 임시 저장한 뒤 Sheet1을 읽고, 검증 실패 데이터는 DB 저장 전에 화면으로 돌려줍니다.
+module.exports.uploadCompletionExcel = async function(req, res) {
+    const documentId = req.params.documentId;
+    const tempPath = fileService.createTempPath('xlsx');
+
+    try {
+        await uploadService.saveStream(req, tempPath, {
+            maxSize: 10 * 1024 * 1024
+        });
+
+        const workbook = XLSX.read(tempPath, { type: 'file' });
+        const sheet = workbook.Sheets['Sheet1'];
+
+        if (!sheet) {
+            return send(res, 400, { message: 'Sheet1을 찾을 수 없습니다.' });
+        }
+
+        const rows = XLSX.utils.sheet_to_json(sheet, { raw: false });
+        const errors = validateRows(rows);
+
+        if (errors.length) {
+            return send(res, 200, {
+                success: false,
+                failData: errors
+            });
+        }
+
+        for (const row of rows) {
+            const caseInfo = await caseDao.findByCaseNo(row['사건번호']);
+            if (!caseInfo) {
+                row.error = '입력한 사건번호에 해당하는 이력이 없습니다.';
+                errors.push(row);
+                continue;
+            }
+
+            await documentDao.addCompletion(documentId, {
+                caseId: caseInfo.caseId,
+                url: row['URL'].trim(),
+                numberType: row['사건번호 유무']
+            });
+        }
+
+        send(res, 200, {
+            success: errors.length === 0,
+            count: rows.length,
+            failData: errors
+        });
+    } finally {
+        fs.unlink(tempPath, () => {});
+    }
+};
+
+function validateRows(rows) {
+    return rows.reduce((errors, row) => {
+        if (!row['사건번호'] || !isValidCaseNo(row['사건번호'])) {
+            row.error = '사건번호 형식이 잘못되었습니다.';
+            errors.push(row);
+        } else if (!row['URL'] || !row['URL'].trim()) {
+            row.error = 'URL 정보가 잘못되었습니다.';
+            errors.push(row);
+        } else if (row['사건번호 유무'] && !['1', '2'].includes(String(row['사건번호 유무']))) {
+            row.error = '사건번호 유무 정보가 잘못되었습니다.';
+            errors.push(row);
+        }
+
+        return errors;
+    }, []);
+}
+                    </code></pre>
+                 </div>
             </div>
         </details>
 
         <details class="project_toggle_item">
-            <summary>토큰 기반 암호화 적용으로 Form 전송 데이터 보안 강화</summary>
+            <summary>토큰 기반 AES 암호화를 적용해 Form 민감 데이터 전송 보안 강화</summary>
             <div class="project_toggle_body">
                 <p>
-                    사용자 페이지에서 전송되는 데이터에 토큰 기반 암호화를 적용해 보안을 강화한 내용을 정리하는 영역입니다.
-                    어떤 데이터가 보호 대상이었는지, 어느 시점에 암호화/복호화가 일어나는지 설명하면 좋습니다.
+                    상담 확인 Form에서 비밀번호가 평문으로 서버에 전달되는 구조를 개선하기 위해, Redis 기반의 단기 유효 토큰과 AES-256-CBC 암호화를 결합한 전송 보안 로직을 구현했습니다.
+<br>클라이언트가 Form 제출 전 서버에서 발급받은 일회성 토큰과 AES Key를 이용해 비밀번호를 암호화하고, 서버는 전달받은 토큰으로 Redis에 저장된 Key를 조회해 복호화한 뒤 기존 로그인 검증 로직을 수행하도록 개선했습니다.
                 </p>
-                <div class="project_placeholder">
-                    이후 추가 예정 예시: 적용 배경, 암호화 흐름, 대상 파라미터, 보안상 기대 효과
-                </div>
+                <div class="project_placeholder project_code_box">
+                    <div class="project_code_head">
+                        <span>토큰 생성, AES Key 생성, Redis 저장, 암복호화 처리</span>
+                    </div>
+                    <pre><code class="language-javascript">
+/*
+1. crypto.randomBytes 기반 64자리 토큰 및 256bit AES Key 생성
+2. Redis를 활용해 토큰-Key 매핑 정보를 5분 TTL로 저장
+3. 클라이언트에서 CryptoJS AES-CBC + PKCS7 방식으로 비밀번호 암호화
+4. 서버에서 토큰 유효성, 형식, 만료 여부를 검증한 뒤 AES 복호화 수행
+5. 로그인 성공 후 사용된 토큰 삭제로 재사용 위험 감소
+6. 토큰 누락, 형식 오류, 만료, 복호화 실패 등 예외 상황별 에러 코드 분리
+*/
+
+generateToken() {
+    return crypto.randomBytes(32).toString('hex');
+}
+
+generateAesKey() {
+    return crypto.randomBytes(32).toString('hex');
+}
+
+createTokenKeyPair() {
+    return new Promise((resolve, reject) => {
+        const token = this.generateToken();
+        const aesKey = this.generateAesKey();
+
+        const tokenData = JSON.stringify({
+            key: aesKey,
+            createdAt: Date.now()
+        });
+
+        this.redisClient.setex(`token:${token}`, this.tokenTTL, tokenData, (err) => {
+            if (err) reject(err);
+            else resolve(token);
+        });
+    });
+}
+
+                    </code></pre>
+
+                    <div class="project_placeholder project_code_box">
+                        <div class="project_code_head">
+                            <span>토큰 발급 API, AES Key 조회 API, 로그인 복호화 처리</span>
+                        </div>
+                        <pre><code class="language-javascript">
+module.exports.createEncryptionToken = async function(req, res) {
+    try {
+        const token = await tokenService.createTokenKeyPair();
+        send(res, 200, { token });
+    } catch (error) {
+        send(res, 500, { message: '암호화 토큰 생성 중 오류가 발생했습니다.' });
+    }
+};
+
+module.exports.getAesKeyByToken = async function(req, res) {
+    const token = req.body.token || req.query.token;
+
+    try {
+        const aesKey = await tokenService.getBase64AesKey(token);
+        send(res, 200, { aesKey, token });
+    } catch (error) {
+        send(res, error.httpStatus || 500, {
+            errorCode: error.errorCode || 'UNKNOWN_ERROR'
+        });
+    }
+};
+
+module.exports.login = async function(req, res) {
+    try {
+        const password = await tokenService.decrypt(req.body.password, req.body.token);
+
+        await tokenService.remove(req.body.token);
+        return loginService.signIn(req.body.userId, password, res);
+    } catch (error) {
+        return send(res, error.httpStatus || 500, {
+            errorCode: error.errorCode || 'DECRYPT_FAIL'
+        });
+    }
+};
+
+                        </code></pre>
+                     </div>
+
+
+                     <div class="project_placeholder project_code_box">
+                        <div class="project_code_head">
+                            <span>클라이언트 토큰 요청 및 Form 비밀번호 암호화</span>
+                        </div>
+                        <pre><code class="language-javascript">
+function encryptPassword(password, aesKey) {
+    const keyBytes = CryptoJS.enc.Base64.parse(aesKey);
+    const iv = CryptoJS.lib.WordArray.random(16);
+
+    const encrypted = CryptoJS.AES.encrypt(password, keyBytes, {
+        iv: iv,
+        mode: CryptoJS.mode.CBC,
+        padding: CryptoJS.pad.Pkcs7
+    });
+
+    const ivHex = iv.toString(CryptoJS.enc.Hex);
+    const encryptedBase64 = encrypted.toString();
+
+    return ivHex + ':' + encryptedBase64;
+}
+
+                        </code></pre>
+                     </div>
+                 </div>
             </div>
         </details>
     </section>

@@ -1,9 +1,12 @@
 <div class="project_layer">
     <div class="project_layer_head">
-        <div class="project_layer_kicker">WORK 03</div>
+        <div class="project_layer_kicker">
+            <span>PROJECT 03</span>
+        </div>
+        <p class="project_security_note">모든 예제 코드와 쿼리는 보안 및 기밀유지를 위해 일부 익명화·변형하여 작성했습니다.</p>
         <h2 class="project_layer_title" id="portfolioModalTitle">충청남도 폭력피해자 지원시설 업무관리시스템 구축</h2>
         <p class="project_layer_desc">
-            기관 데이터의 DB화, 지도 API 연동, 실시간 알림, 파일 업로드 UX 개선까지 함께 수행한 프로젝트입니다.
+            기관 데이터의 DB화, 지도 API 연동, 실시간 알림을 수행한 프로젝트입니다.
             아래에서 각 수행 작업별 상세 내용을 펼쳐서 볼 수 있습니다.
         </p>
     </div>
@@ -13,8 +16,7 @@
             <h3 class="project_panel_title">주요 수행 작업</h3>
             <div class="project_bullet_list">
                 <div class="project_bullet_item">유관기관 DB화 + 지도API 연동</div>
-                <div class="project_bullet_item">실시간 알림 기능 (Socket.io)</div>
-                <div class="project_bullet_item">Dropzone 파일 라이브러리 연동</div>
+                <div class="project_bullet_item">실시간 알림 기능 개발(Socket.io)</div>
             </div>
         </section>
 
@@ -26,7 +28,6 @@
                 <span>MariaDB</span>
                 <span>지도 API</span>
                 <span>Socket.io</span>
-                <span>Dropzone</span>
             </div>
         </section>
     </div>
@@ -34,41 +35,307 @@
     <section class="project_panel project_toggle_panel">
         <h3 class="project_panel_title">수행 작업 상세</h3>
 
-        <details class="project_toggle_item" open>
+        <details class="project_toggle_item">
             <summary>유관기관 DB화 + 지도API 연동</summary>
             <div class="project_toggle_body">
                 <p>
-                    기존에 정적으로 관리되던 기관 정보를 DB 기반으로 전환하고, 지도 API와 연동하여 활용도를 높인 내용을 정리하는 영역입니다.
-                    데이터 구조 변경 이유와 지도 표시 흐름을 함께 보여주면 좋습니다.
+                    기존 기관 주소는 운영자가 별도 모달에서 timestamp, key, 좌표값 등을 직접 입력해 수동 저장하는 구조였습니다.
+                    <br>이 방식은 지도 정보 입력 과정이 직관적이지 않고 오입력 가능성이 있어, 지도 API 기반 주소 검색 및 좌표 등록 방식으로 개선했습니다.
                 </p>
-                <div class="project_placeholder">
-                    이후 추가 예정 예시: 기관 데이터 구조, 관리 방식 개선, 지도 연동 흐름, 사용자 편의성 향상
+                <div class="project_placeholder project_code_box">
+                    <div class="project_code_head">
+                        <span>이전 구조</span>
+                    </div>
+                    <pre><code class="language-java">
+// 하드코딩된 기관 주소 정보
+const agencyList = [
+  {
+    name: '기관 A',
+    address: '충청남도 천안시 ...',
+    tel: '000-000-0000'
+  },
+  {
+    name: '기관 B',
+    address: '충청남도 아산시 ...',
+    tel: '000-000-0000'
+  }
+];
+
+// 사용자가 지도 관련 값을 직접 입력
+&lt;form class="clean-form" id="map-info-form"&gt;
+    ...
+    &lt;input type="text" name="timestamp" /&gt;
+    &lt;input type="text" name="mapKey" /&gt;
+    &lt;input type="text" name="address" placeholder="주소를 입력하세요." /&gt;
+    ...
+&lt;/form&gt;
+
+// 기존 mapInfo를 JSON으로 파싱한 뒤 다시 문자열로 만들어 서버에 저장
+const showMapModal = async (agencyId: number) => {
+    const agencyInfo = await getAgencyInfo(agencyId);
+    const mapInfo = JSON.parse(agencyInfo.mapInfo || '{}');
+
+    $('#map-info-form input[name=timestamp]').val(mapInfo.timestamp || '');
+    $('#map-info-form input[name=mapKey]').val(mapInfo.mapKey || '');
+};
+
+const updateMapInfo = async (agencyId: number) => {
+    const timestamp = $('#map-info-form input[name=timestamp]').val() as string;
+    const mapKey = $('#map-info-form input[name=mapKey]').val() as string;
+
+    const payload = {
+        mapInfo: JSON.stringify({
+            timestamp,
+            mapKey
+        })
+    };
+
+    await requestAxios('post', `/api/agencies/${agencyId}/map-info`, payload);
+};
+
+                    </code></pre>
+                </div>
+
+                <div class="project_placeholder project_code_box">
+                    <div class="project_code_head">
+                        <span>변경 구조</span>
+                    </div>
+                    <pre><code class="language-java">
+//수동 입력 모달을 없애고, 지도 API 주소 검색 UI로 변경
+&lt;form id="agency-form"&gt;
+    &lt;input type="text" name="name" placeholder="기관명을 입력하세요."&gt;
+
+    &lt;div class="address-search"&gt;
+        &lt;input type="text" name="address" id="agency-address" readonly&gt;
+        &lt;button type="button" onclick="openAddressSearch()"&gt;주소 검색&lt;/button&gt;
+    &lt;/div&gt;
+
+    &lt;div id="agency-map" class="map-area"&gt;&lt;/div&gt;
+
+    &lt;input type="hidden" name="latitude"&gt;
+    &lt;input type="hidden" name="longitude"&gt;
+    &lt;input type="hidden" name="placeId"&gt;
+&lt;/form&gt;
+
+//선택한 장소의 주소와 좌표를 기관 데이터에 같이 저장하는 방식으로 변경
+let selectedMarker;
+
+const initAgencyMap = () => {
+    mapApi.load('agency-map', {
+        center: { lat: 36.6588, lng: 126.6728 },
+        level: 8
+    });
+};
+
+const openAddressSearch = () => {
+    mapApi.searchAddress({
+        onSelect: (place) => {
+            $('#agency-form input[name=address]').val(place.address);
+            $('#agency-form input[name=latitude]').val(place.lat);
+            $('#agency-form input[name=longitude]').val(place.lng);
+            $('#agency-form input[name=placeId]').val(place.id);
+
+            selectedMarker?.remove();
+            selectedMarker = mapApi.addMarker({
+                lat: place.lat,
+                lng: place.lng,
+                title: place.name
+            });
+
+            mapApi.setCenter(place.lat, place.lng);
+        }
+    });
+};
+
+const addAgency = async () => {
+    const agencyInfo = getForm('#agency-form', ['typeCode', 'supportCode']);
+
+    agencyInfo.mapInfo = {
+        latitude: Number(agencyInfo.latitude),
+        longitude: Number(agencyInfo.longitude),
+        placeId: agencyInfo.placeId,
+        address: agencyInfo.address
+    };
+
+    await requestAxios('post', '/api/agencies', agencyInfo);
+};
+
+//사용자: DB에 저장된 주소값을 지도 API로 변환해 지도 표시
+const agencies = await requestAxios('get', '/api/agencies');
+
+agencies.forEach((agency) => {
+    mapApi.geocode(agency.address, (coords) => {
+        mapApi.addMarker({
+            lat: coords.latitude,
+            lng: coords.longitude,
+            title: agency.name
+        });
+    });
+});
+                    </code></pre>
                 </div>
             </div>
         </details>
 
         <details class="project_toggle_item">
-            <summary>실시간 알림 기능 (Socket.io)</summary>
+            <summary>실시간 알림 기능 개발(Socket.io)</summary>
             <div class="project_toggle_body">
                 <p>
-                    사용자 또는 운영자에게 실시간으로 상태를 전달하는 알림 기능을 구현한 내용을 정리하는 영역입니다.
-                    어떤 이벤트가 발생했을 때 어떤 사용자에게 어떤 방식으로 전달되는지 쓰기 좋습니다.
+                    Socket.io 기반 사용자별 실시간 알림 기능을 구현했습니다.
+                    <br>상담 담당자 배정, 결재 요청, 회원가입 승인 요청 등 즉시 확인이 필요한 이벤트가 발생하면 알림을 먼저 DB에 저장하고, 저장된 알림 데이터를 사용자 ID 기반 room으로 emit하여 대상 사용자에게만 전달했습니다
+                    <br>Redis Adapter를 적용해 서버 확장 시에도 Socket.io 이벤트가 인스턴스 간 공유될 수 있도록 구성했으며,
+                    <br>클라이언트에서는 WebSocket 연결 후 join(userId) 이벤트로 개인 room에 입장하고 notification 이벤트 수신 시 알림 목록, 미확인 카운트, toast UI를 즉시 갱신하도록 처리했습니다.
                 </p>
-                <div class="project_placeholder">
-                    이후 추가 예정 예시: 이벤트 발생 조건, 소켓 연결 흐름, 알림 표시 방식, 운영상 효과
-                </div>
-            </div>
-        </details>
 
-        <details class="project_toggle_item">
-            <summary>Dropzone 파일 라이브러리 연동</summary>
-            <div class="project_toggle_body">
-                <p>
-                    파일 업로드 UX를 개선하기 위해 Dropzone 라이브러리를 연동한 내용을 정리하는 영역입니다.
-                    기존 업로드 방식과 비교해 무엇이 좋아졌는지 함께 적으면 전달력이 높아집니다.
-                </p>
-                <div class="project_placeholder">
-                    이후 추가 예정 예시: 기존 업로드 문제점, Dropzone 도입 이유, UI 개선 포인트, 사용자 경험 변화
+                <div class="project_placeholder project_code_box">
+                    <div class="project_code_head">
+                        <span>Socket.io 서버 생성 및 Redis Adapter 연결</span>
+                    </div>
+                    <pre><code class="language-typescript">
+export const createSocketServer = async (server: any, redisClient: any): Promise&lt;SocketIOServer&gt; => {
+    const io = new SocketIOServer(server, {
+        path: '/service/socket.io',
+        cors: {
+            origin: '*',
+            methods: ['GET', 'POST']
+        }
+    });
+
+    const pubClient = redisClient;
+    const subClient = pubClient.duplicate();
+    io.adapter(createAdapter(pubClient, subClient));
+
+    return io;
+};
+                    </code></pre>
+                </div>
+
+                <div class="project_placeholder project_code_box">
+                    <div class="project_code_head">
+                        <span>Socket.io 인스턴스를 DI 컨테이너에 등록하고 알림 소켓 초기화</span>
+                    </div>
+                    <pre><code class="language-typescript">
+await connectRedis();
+const io: SocketIOServer = await createSocketServer(server, redisClient);
+container.bind&lt;SocketIOServer&gt;(TYPES.SocketIO).toConstantValue(io);
+await attachSocket();
+                    </code></pre>
+                </div>
+
+                <div class="project_placeholder project_code_box">
+                    <div class="project_code_head">
+                        <span>사용자 room 입장 및 메시지 이벤트 처리</span>
+                    </div>
+                    <pre><code class="language-typescript">
+initialize(): void {
+    this.io.on('connection', (socket: Socket) => {
+        socket.on('join', (userId: string) => {
+            socket.join(userId);
+        });
+
+        socket.on('message', async (data) => {
+            await this.notificationService.sendNotification(data.recipient, data.message);
+        });
+    });
+}
+                    </code></pre>
+                </div>
+
+                <div class="project_placeholder project_code_box">
+                    <div class="project_code_head">
+                        <span>알림 저장 후 특정 사용자 room으로 실시간 전송</span>
+                    </div>
+                    <pre><code class="language-typescript">
+async sendNotification(userId: string, message: string): Promise&lt;void&gt; {
+    const notification = await this.notificationRepository.create({ userId, message });
+    this.socketIO?.to(userId).emit('notification', notification);
+}
+                    </code></pre>
+                </div>
+
+                <div class="project_placeholder project_code_box">
+                    <div class="project_code_head">
+                        <span>상담 담당자 배정 시 알림 발송</span>
+                    </div>
+                    <pre><code class="language-typescript">
+const assignedIds = await this.recordService.assignManager(
+    recordId,
+    targetIds.map(Number),
+    managerType
+);
+
+await Promise.allSettled(
+    assignedIds.map(assignId =>
+        this.notificationService.sendNotification(
+            recordId,
+            this.createAssignNotificationMessage(assignId, managerType)
+        )
+    )
+);
+                    </code></pre>
+                </div>
+
+                <div class="project_placeholder project_code_box">
+                    <div class="project_code_head">
+                        <span>알림 DB 저장 및 저장 row 반환</span>
+                    </div>
+                    <pre><code class="language-typescript">
+async create(notification: Notification): Promise&lt;NotificationQueryResult&gt; {
+    const connection = await getConnection(true);
+
+    try {
+        const insertQuery = `
+            INSERT INTO NOTIFICATION
+                (USER_ID, MESSAGE)
+            VALUES (?, ?)
+        `;
+        const insertParams = [notification.userId, notification.message];
+        const [result]: any = await connection.query(insertQuery, insertParams);
+        const insertedId = result.insertId;
+
+        const [rows]: any = await connection.query(
+            `SELECT * FROM NOTIFICATION WHERE NTC_ID = ?`,
+            [insertedId]
+        );
+
+        await commitTransaction(connection);
+
+        return rows[0];
+    } catch (error) {
+        await rollbackTransaction(connection);
+        throw error;
+    } finally {
+        connection.release();
+    }
+}
+                    </code></pre>
+                </div>
+
+                <div class="project_placeholder project_code_box">
+                    <div class="project_code_head">
+                        <span>클라이언트 Socket 연결, room join, 알림 수신 UI 갱신</span>
+                    </div>
+                    <pre><code class="language-java">
+socket = io('/service', {
+    path: '/service/socket.io',
+    transports: ['websocket'],
+    secure: true
+});
+
+socket.on('connect', () => {
+    socket.emit('join', userId);
+});
+
+socket.on('notification', (notification) => {
+    const html = generateNotificationHtml([notification]);
+    appendNotificationHtml(html);
+    updateNotificationCount();
+
+    const $message = $('&lt;div&gt;').html(notification.MESSAGE);
+    $message.find('[style]').removeAttr('style');
+    toastr.info($message.html());
+});
+                    </code></pre>
                 </div>
             </div>
         </details>
