@@ -6,7 +6,7 @@
         <p class="project_security_note">모든 예제 코드와 쿼리는 보안 및 기밀유지를 위해 일부 익명화·변형하여 작성했습니다.</p>
         <h2 class="project_layer_title" id="portfolioModalTitle">디지털성범죄피해자지원센터 삭제지원시스템 유지보수 및 고도화</h2>
         <p class="project_layer_desc">
-            조건 기반 통계, 문서 자동화, 전송 데이터 보안 강화를 중심으로 고도화를 수행한 프로젝트입니다.
+            문서 자동화와 전송 데이터 보안 강화를 중심으로 고도화를 수행한 프로젝트입니다.
             아래에서 수행 작업별 상세 내용을 토글 형식으로 확인할 수 있습니다.
         </p>
     </div>
@@ -15,7 +15,6 @@
         <section class="project_panel">
             <h3 class="project_panel_title">주요 수행 작업</h3>
             <div class="project_bullet_list">
-                <div class="project_bullet_item">사용자 입력 조건 기반 통계 집계 및 조회 기능 구현</div>
                 <div class="project_bullet_item">불법성 증명 공문 관리 및 문서 자동화 기능 개발</div>
                 <div class="project_bullet_item">토큰 기반 AES 암호화를 적용해 Form 민감 데이터 전송 보안 강화</div>
             </div>
@@ -27,7 +26,6 @@
                 <span>Node.js</span>
                 <span>Express</span>
                 <span>MariaDB</span>
-                <span>통계 집계</span>
                 <span>문서 자동화</span>
                 <span>보안 강화</span>
             </div>
@@ -38,157 +36,10 @@
         <h3 class="project_panel_title">수행 작업 상세</h3>
 
         <details class="project_toggle_item">
-            <summary>사용자 입력 조건 기반 통계 집계 및 조회 기능 구현</summary>
-            <div class="project_toggle_body">
-                <p>
-                    사용자가 화면에서 기간, 유형, 항목, 인덱스 등 조회 조건을 직접 선택하면, 선택값을 기준으로 통계 API를 호출하고 DB 데이터를 집계해 화면 테이블에 렌더링하는 통계 조회 기능을 구현했습니다.
-                    <br>프론트엔드에서는 선택 조건 검증과 API 호출을 담당하고, 백엔드에서는 기간 조건에 맞는 상담·삭제·모니터링 데이터를 조회한 뒤 항목별 합계를 계산하도록 구성했습니다.
-                </p>
-                <div class="project_placeholder project_code_box">
-                    <div class="project_code_head">
-                        <span>사용자 조건 선택 화면</span>
-                    </div>
-                    <pre><code class="language-html">
-&lt;input class="start-date" type="text" autocomplete="off"&gt;
-&lt;input class="end-date" type="text" autocomplete="off"&gt;
-
-&lt;button class="btn primary" onclick="searchStats(this);"&gt;
-  조회
-&lt;/button&gt;
-
-&lt;select id="stats-type" onchange="changeStatsType()"&gt;
-  ...
-&lt;/select&gt;
-
-&lt;select id="stats-category" onchange="changeStatsCategory()"&gt;
-  ...
-&lt;/select&gt;
-
-&lt;select id="stats-index"&gt;&lt;/select&gt;
-                    </code></pre>
-                    <div class="project_code_head">
-                        <span>조회 버튼 클릭 시 선택 조건으로 통계 호출</span>
-                    </div>
-                    <pre><code class="language-javascript">
-async function searchStats(button) {
-    const section = $(button).closest('section');
-    const sectionId = section.attr('id');
-    const startDate = section.find('.start-date').val();
-    const endDate = section.find('.end-date').val();
-
-    const handlers = {
-        'summary-stats': renderSummaryStats,
-        'channel-stats': renderChannelStats,
-        'member-stats': renderMemberStats,
-    };
-
-    if (!handlers[sectionId]) {
-        return;
-    }
-
-    blockView(true);
-    await handlers[sectionId](startDate, endDate);
-    blockView(false);
-}
-                    </code></pre>
-                    <div class="project_code_head">
-                        <span>선택한 조건을 API로 전달</span>
-                    </div>
-                    <pre><code class="language-javascript">
-function getStatistics(startDate, endDate) {
-    return new Promise((resolve) => {
-        $.ajax({
-            type: 'POST',
-            url: '/api/stats/search',
-            data: { startDate, endDate },
-            success: data => resolve(data),
-            error: () => resolve(false)
-        });
-    });
-}
-                    </code></pre>
-
-                    <div class="project_code_head">
-                        <span>서버에서 조건 기반 통계 집계</span>
-                    </div>
-                    <pre><code class="language-javascript">
-module.exports.getStatistics = async (req, res) => {
-    const { startDate, endDate } = req.body;
-
-    try {
-        const users = await statsDao.findActiveUsers();
-        const rows = await statsDao.findStatsByPeriod(startDate, endDate);
-
-        const result = {
-            total: {
-                data: {
-                    groupA: {},
-                    groupB: {}
-                }
-            }
-        };
-
-        users.forEach(user => {
-            result[user.id] = {
-                name: user.name,
-                data: {
-                    userNo: user.userNo,
-                    total: 0
-                }
-            };
-        });
-
-        rows.forEach(row => {
-            if (!result[row.userId]) {
-                return;
-            }
-
-            const group = resolveGroup(result[row.userId], row.typeCode);
-            result.total.data[group].total = (result.total.data[group].total || 0) + 1;
-            result[row.userId].data.total += 1;
-        });
-
-        send(res, 200, result);
-    } catch (error) {
-        send(res, 500, {
-            message: '통계 조회 중 오류가 발생했습니다.'
-        });
-    }
-};
-                    </code></pre>
-                 </div>
-
-                 <div class="project_placeholder project_code_box">
-                    <div class="project_code_head">
-                        <span>DB 조회 조건 적용</span>
-                    </div>
-                    <pre><code class="language-javascript">
-module.exports.findStatisticsRows = async function(startDate, endDate) {
-    const period = {
-        startDate: new Date(startDate),
-        endDate: new Date(endDate)
-    };
-
-    const [historyRows, monitoringRows] = await Promise.all([
-        statsDao.findHistoryRows(period),
-        statsDao.findMonitoringRows(period)
-    ]);
-
-    return {
-        history: historyRows,
-        monitoring: monitoringRows
-    };
-};
-                    </code></pre>
-                 </div>
-            </div>
-        </details>
-
-        <details class="project_toggle_item">
             <summary>불법성 증명 공문 관리 및 문서 자동화 기능 개발</summary>
             <div class="project_toggle_body">
                 <p>
-                    디지털 성범죄 피해 지원 업무에서 불법성 증명 공문 요청, URL 수집, 완료 처리, 통계 조회, 공문 PDF 생성까지 이어지는 운영 흐름을 웹 기반 관리 기능으로 구현했습니다.
+                    디지털 성범죄 피해 지원 업무에서 불법성 증명 공문 요청, URL 수집, 완료 처리, 공문 PDF 생성까지 이어지는 운영 흐름을 웹 기반 관리 기능으로 구현했습니다.
                     <br>관리자가 공문 건을 등록한 뒤 대상 URL과 삭제 완료 내역을 관리할 수 있으며, 엑셀 업로드·다운로드와 PDF 공문 생성 기능을 통해 반복적인 문서 작성 업무를 자동화하도록 구현했습니다.
                 </p>
                 <div class="project_placeholder project_code_box">
