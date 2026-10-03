@@ -294,8 +294,8 @@ FROM RecordHistory
 INNER JOIN MainRecord
    ON MainRecord.VALUE_TEXT = RecordHistory.VALUE_TEXT
   AND MainRecord.TYPE_CODE = RecordHistory.TYPE_CODE
-WHERE MainRecord.VALUE_TEXT = HEX(AES_ENCRYPT(#{valueText}, ${encryptKey}))
-  AND MainRecord.TYPE_CODE = HEX(AES_ENCRYPT(#{typeCode}, ${encryptKey}))
+WHERE HEX(AES_ENCRYPT(MainRecord.VALUE_TEXT, ${encryptKey})) = #{valueText}
+  AND HEX(AES_ENCRYPT(MainRecord.TYPE_CODE), ${encryptKey}) = #{typeCode}
                     </code></pre>
                 </div><br>
                 <p>
